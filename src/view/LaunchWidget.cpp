@@ -1,13 +1,13 @@
 
+#include <utility>
 #include "LaunchWidget.hpp"
 #include "../consts.hpp"
 
-LaunchWidget::LaunchWidget(QWidget* parent, Function onStartClickedCallback, void* callbackParameter) :
+LaunchWidget::LaunchWidget(QWidget* parent, Callback onStartClickedCallback) :
     layout(this),
     appName(this),
     startGame(this),
-    onStartClickedCallback(onStartClickedCallback),
-    callbackParameter(callbackParameter)
+    onStartClickedCallback(std::move(onStartClickedCallback))
 {
     appName.setText(APP_NAME);
     appName.setFont(QFont(appName.font().family(), 12));
@@ -25,4 +25,4 @@ LaunchWidget::LaunchWidget(QWidget* parent, Function onStartClickedCallback, voi
     layout.addStretch();
 }
 
-void LaunchWidget::onStartClicked() { onStartClickedCallback(callbackParameter); }
+void LaunchWidget::onStartClicked() { onStartClickedCallback(); }

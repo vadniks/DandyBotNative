@@ -4,19 +4,21 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QPushButton>
+#include <functional>
 #include "../util.hpp"
+
+using Callback = std::function<void ()>;
 
 class LaunchWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit LaunchWidget(QWidget* parent, Function onStartClicked, void* callbackParameter);
+    explicit LaunchWidget(QWidget* parent, Callback onStartClicked);
     ~LaunchWidget() override = default;
 private:
     QVBoxLayout layout;
     QLabel appName;
     QPushButton startGame;
-    Function onStartClickedCallback;
-    void* callbackParameter;
+    Callback onStartClickedCallback;
 private slots:
     void onStartClicked();
 };
