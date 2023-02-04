@@ -1,7 +1,7 @@
 
 #include "Window.hpp"
 #include "LaunchWidget.hpp"
-#include "consts.hpp"
+#include "../consts.hpp"
 
 Window::Window() {
     currentWidget = new LaunchWidget(this);

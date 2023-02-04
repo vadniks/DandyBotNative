@@ -1,6 +1,6 @@
 
 #include "LaunchWidget.hpp"
-#include "consts.hpp"
+#include "../consts.hpp"
 
 LaunchWidget::LaunchWidget(QWidget* parent) :
     layout(this), appName(this), startGame(this)
