@@ -1,7 +1,6 @@
 
 #pragma once
 
-typedef char* str;
-typedef const char* c_str;
+#include "util.hpp"
 
 extern c_str APP_NAME;

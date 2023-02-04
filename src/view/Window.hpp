@@ -10,4 +10,5 @@ public:
     ~Window() override;
 private:
     QWidget* currentWidget;
+    void onGameLaunched();
 };

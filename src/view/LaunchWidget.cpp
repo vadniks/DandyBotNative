@@ -2,22 +2,27 @@
 #include "LaunchWidget.hpp"
 #include "../consts.hpp"
 
-LaunchWidget::LaunchWidget(QWidget* parent) :
-    layout(this), appName(this), startGame(this)
+LaunchWidget::LaunchWidget(QWidget* parent, Function onStartClickedCallback, void* callbackParameter) :
+    layout(this),
+    appName(this),
+    startGame(this),
+    onStartClickedCallback(onStartClickedCallback),
+    callbackParameter(callbackParameter)
 {
-    setParent(parent);
-    layout.setAlignment(Qt::AlignCenter);
-
-    layout.addStretch();
-
     appName.setText(APP_NAME);
     appName.setFont(QFont(appName.font().family(), 12));
     appName.setSizePolicy(QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
-    layout.addWidget(&appName);
 
     startGame.setText("Start");
     startGame.setSizePolicy(QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
-    layout.addWidget(&startGame);
+    connect(&startGame, &QPushButton::clicked, this, &LaunchWidget::onStartClicked);
 
+    setParent(parent);
+    layout.setAlignment(Qt::AlignCenter);
+    layout.addStretch();
+    layout.addWidget(&appName);
+    layout.addWidget(&startGame);
     layout.addStretch();
 }
+
+void LaunchWidget::onStartClicked() { onStartClickedCallback(callbackParameter); }

@@ -7,7 +7,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-file(GLOB sources CONFIGURE_DEPENDS "src/*.hpp" "src/*.cpp")
+file(GLOB sources CONFIGURE_DEPENDS "src/*.hpp" "src/*.cpp" "src/*/*.hpp" "src/*/*.cpp")
 add_executable(${PROJECT_NAME} ${sources})
 
 find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
