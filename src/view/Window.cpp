@@ -1,11 +1,11 @@
 
 #include "Window.hpp"
 #include "LaunchWidget.hpp"
+#include "BoardWidget.hpp"
 #include "../consts.hpp"
 
 Window::Window() {
-    currentWidget = new LaunchWidget(this, [this](){ onGameLaunched(); });
-    setCentralWidget(currentWidget);
+    setCentralWidget(currentWidget = new LaunchWidget(this, [this](){ onGameLaunched(); }));
     setMinimumSize(1280, 720);
     setWindowTitle(APP_NAME);
 //    setWindowIcon();
@@ -15,5 +15,6 @@ Window::Window() {
 Window::~Window() { delete currentWidget; }
 
 void Window::onGameLaunched() {
-
+    delete currentWidget;
+    setCentralWidget(currentWidget = new BoardWidget(this));
 }

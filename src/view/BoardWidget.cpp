@@ -1,6 +1,6 @@
 
 #include "BoardWidget.hpp"
 
-BoardWidget::BoardWidget() {
-
+BoardWidget::BoardWidget(QWidget* parent) {
+    setParent(parent);
 }
