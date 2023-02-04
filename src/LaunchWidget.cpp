@@ -1,5 +1,6 @@
 
-#include "launchWidget.hpp"
+#include "LaunchWidget.hpp"
+#include "consts.hpp"
 
 LaunchWidget::LaunchWidget(QWidget* parent) :
     layout(this), appName(this), startGame(this)
@@ -9,7 +10,8 @@ LaunchWidget::LaunchWidget(QWidget* parent) :
 
     layout.addStretch();
 
-    appName.setText("App name tfgbhdtfg");
+    appName.setText(APP_NAME);
+    appName.setFont(QFont(appName.font().family(), 12));
     appName.setSizePolicy(QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
     layout.addWidget(&appName);
 

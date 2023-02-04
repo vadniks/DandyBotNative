@@ -1,12 +1,14 @@
 
 #include "Window.hpp"
-#include "launchWidget.hpp"
+#include "LaunchWidget.hpp"
+#include "consts.hpp"
 
 Window::Window() {
     currentWidget = new LaunchWidget(this);
     setCentralWidget(currentWidget);
-//    setWindowState(Qt::WindowState::WindowFullScreen);
-    setMinimumSize(1024, 576);
+    setMinimumSize(1280, 720);
+    setWindowTitle(APP_NAME);
+//    setWindowIcon();
     show();
 }
 
