@@ -3,7 +3,9 @@
 
 #include <QObject>
 
-class GameBoard : QObject {
+class GameBoard : public QObject {
 public:
     explicit GameBoard(QObject* parent);
+private:
+
 };

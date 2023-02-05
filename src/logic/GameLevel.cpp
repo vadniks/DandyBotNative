@@ -1,6 +1,8 @@
 
 #include "GameLevel.hpp"
 
-GameLevel::GameLevel(unsigned int level) {
+GameLevel::GameLevel(QObject* parent, unsigned int mapId, Position&& playerStart, unsigned int scoreToProceed) :
+    QObject(parent), mapId(mapId), playerStart(playerStart), scoreToProceed(scoreToProceed)
+{
 
 }
