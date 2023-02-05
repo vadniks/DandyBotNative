@@ -7,12 +7,11 @@
 #include <functional>
 #include "../util.hpp"
 
-using Callback = std::function<void ()>;
-
 class LaunchWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit LaunchWidget(QWidget* parent, Callback onStartClicked);
+    using Callback = std::function<void ()>;
+    explicit LaunchWidget(QWidget* parent, Callback&& onStartClicked);
     ~LaunchWidget() override = default;
 private:
     QVBoxLayout layout;

@@ -1,13 +1,12 @@
 
-#include <utility>
 #include "LaunchWidget.hpp"
 #include "../consts.hpp"
 
-LaunchWidget::LaunchWidget(QWidget* parent, Callback onStartClickedCallback) :
+LaunchWidget::LaunchWidget(QWidget* parent, Callback&& onStartClickedCallback) :
     layout(this),
     appName(this),
     startGame(this),
-    onStartClickedCallback(std::move(onStartClickedCallback))
+    onStartClickedCallback(onStartClickedCallback)
 {
     appName.setText(APP_NAME);
     appName.setFont(QFont(appName.font().family(), 12));
