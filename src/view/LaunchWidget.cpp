@@ -12,7 +12,7 @@ LaunchWidget::LaunchWidget(QWidget* parent, Callback&& onStartClickedCallback) :
     appName.setFont(QFont(appName.font().family(), 12));
     appName.setSizePolicy(QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
 
-    startGame.setText("Start");
+    startGame.setText(START_GAME);
     startGame.setSizePolicy(QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
     connect(&startGame, &QPushButton::clicked, this, &LaunchWidget::onStartClicked);
 
