@@ -19,7 +19,7 @@ GameData::GameData(QObject* parent) : QObject(parent) {
     const unsigned size = levelsArray.size();
     if (size != mapsArray.size()) throw QException();
 
-    for (unsigned i = 0; i <= size; i++) {
+    for (unsigned i = 0; i < size; i++) {
         auto level = levelsArray[i].toObject();
         auto position = level[START].toArray();
 

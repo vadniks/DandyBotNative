@@ -11,5 +11,5 @@ public:
 protected:
     void paintEvent(QPaintEvent* event) override;
 private:
-    GameBoard* board;
+    GameBoard board;
 };
