@@ -7,6 +7,12 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+set(CMAKE_BUILD_TYPE Debug)
+
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -s")
+
 file(GLOB sources CONFIGURE_DEPENDS "src/*.hpp" "src/*.cpp" "src/*/*.hpp" "src/*/*.cpp" "res/resources.qrc")
 add_executable(${PROJECT_NAME} ${sources})
 
@@ -15,11 +21,3 @@ target_link_libraries(${PROJECT_NAME} Qt::Core Qt::Gui Qt::Widgets)
 
 find_package(Boost 1.40 COMPONENTS program_options REQUIRED)
 target_link_libraries(${PROJECT_NAME} Boost::program_options)
-
-set(CMAKE_BUILD_TYPE Debug)
-
-set(CMAKE_CXX_FLAGS "-Wall -Wextra")
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
-
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s")

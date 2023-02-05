@@ -12,7 +12,6 @@ class LaunchWidget : public QWidget {
 public:
     using Callback = std::function<void ()>;
     explicit LaunchWidget(QWidget* parent, Callback&& onStartClicked);
-    ~LaunchWidget() override = default;
 private:
     QVBoxLayout layout;
     QLabel appName;
