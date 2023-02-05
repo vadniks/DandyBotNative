@@ -9,7 +9,7 @@ using Position = std::pair<unsigned, unsigned>;
 class GameLevel final : public QObject {
     Q_OBJECT
 public:
-    explicit GameLevel(
+    GameLevel(
         QObject* parent,
         unsigned id,
         Position&& playerStart,

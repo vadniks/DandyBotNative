@@ -6,5 +6,6 @@
         <file>dandyBot_coin.png</file>
         <file>dandyBot_coins.png</file>
         <file>dandyBot_enemy.png</file>
+        <file>gameData.json</file>
     </qresource>
 </RCC>
