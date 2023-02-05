@@ -4,7 +4,7 @@
 #include <QWidget>
 #include "../logic/GameBoard.hpp"
 
-class BoardWidget : public QWidget {
+class BoardWidget final : public QWidget {
     Q_OBJECT
 public:
     explicit BoardWidget(QWidget* parent);

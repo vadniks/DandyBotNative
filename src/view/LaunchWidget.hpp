@@ -7,7 +7,7 @@
 #include <functional>
 #include "../util.hpp"
 
-class LaunchWidget : public QWidget {
+class LaunchWidget final : public QWidget {
     Q_OBJECT
 public:
     using Callback = std::function<void ()>;
