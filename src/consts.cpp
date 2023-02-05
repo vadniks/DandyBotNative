@@ -1,4 +1,7 @@
 
 #include "consts.hpp"
 
-c_str APP_NAME = "MultiDandyBotNative";
+unsigned APP_WIDTH = 1280;
+unsigned APP_HEIGHT = 720;
+c_str APP_NAME = "DandyBotNative";
+c_str APP_ICON = ":/dandyBot_block.png";

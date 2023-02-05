@@ -6,9 +6,9 @@
 
 Window::Window() {
     setCentralWidget(currentWidget = new LaunchWidget(this, [this](){ onGameLaunched(); }));
-    setMinimumSize(1280, 720);
+    setFixedSize(static_cast<signed>(APP_WIDTH), static_cast<signed>(APP_HEIGHT));
     setWindowTitle(APP_NAME);
-//    setWindowIcon();
+    setWindowIcon(QIcon(APP_ICON));
     show();
 }
 

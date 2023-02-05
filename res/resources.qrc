@@ -1,0 +1,10 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>dandyBot_block.png</file>
+        <file>dandyBot_bot.png</file>
+        <file>dandyBot_coin.png</file>
+        <file>dandyBot_coins.png</file>
+        <file>dandyBot_enemy.png</file>
+    </qresource>
+</RCC>
