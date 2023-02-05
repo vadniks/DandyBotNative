@@ -33,12 +33,13 @@ GameData::GameData(QObject* parent) : QObject(parent) {
             static_cast<unsigned>(level[STEPS].toInt()),
             mapsArray[i].toString()
         ));
+
     }
 
     file.close();
 }
 
 GameData::~GameData() {
-    for (const auto item : levels)
+    for (const GameLevel*& item : levels)
         delete item;
 }
