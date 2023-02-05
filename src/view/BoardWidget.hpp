@@ -9,6 +9,8 @@ class BoardWidget : public QWidget {
 public:
     explicit BoardWidget(QWidget* parent);
     ~BoardWidget() override = default;
+protected:
+    void paintEvent(QPaintEvent* event) override;
 private:
     QVBoxLayout layout;
 

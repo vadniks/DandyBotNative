@@ -15,3 +15,11 @@ target_link_libraries(${PROJECT_NAME} Qt::Core Qt::Gui Qt::Widgets)
 
 find_package(Boost 1.40 COMPONENTS program_options REQUIRED)
 target_link_libraries(${PROJECT_NAME} Boost::program_options)
+
+set(CMAKE_BUILD_TYPE Debug)
+
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s")
