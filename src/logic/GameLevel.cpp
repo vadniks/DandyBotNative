@@ -15,7 +15,7 @@ GameLevel::GameLevel(
     playerStart(playerStart),
     scoreToProceed(scoreToProceed)
 {
-    using Row = vector<const QObject*>;
+    using Row = QVector<const QObject*>;
 
     const char16_t hash = QChar('#').unicode();
     const char16_t one = QChar('1').unicode();
@@ -40,7 +40,7 @@ GameLevel::GameLevel(
 }
 
 GameLevel::~GameLevel() {
-    for (vector<const QObject*>* row : matrix) {
+    for (QVector<const QObject*>* row : matrix) {
         for (const QObject* object : *row)
             delete object;
         delete row;

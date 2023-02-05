@@ -3,10 +3,9 @@
 
 #include <QObject>
 #include <tuple>
-#include <vector>
+#include <QVector>
 
 using Position = std::pair<unsigned, unsigned>;
-using std::vector;
 
 class GameLevel final : public QObject {
     Q_OBJECT
@@ -23,5 +22,5 @@ public:
     const unsigned id;
     const Position playerStart;
     const unsigned scoreToProceed;
-    vector<vector<const QObject*>*> matrix;
+    QVector<QVector<const QObject*>*> matrix;
 };

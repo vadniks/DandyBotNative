@@ -2,7 +2,7 @@
 #pragma once
 
 #include <QObject>
-#include <vector>
+#include <QVector>
 #include "GameLevel.hpp"
 
 class GameData final : public QObject {
@@ -11,5 +11,5 @@ public:
     explicit GameData(QObject* parent);
     ~GameData() override;
 
-    std::vector<const GameLevel*> levels;
+    QVector<const GameLevel*> levels;
 };
