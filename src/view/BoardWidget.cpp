@@ -1,11 +1,12 @@
 
+#include <QPainter>
 #include "BoardWidget.hpp"
 
-BoardWidget::BoardWidget(QWidget* parent) {
-    setParent(parent);
-}
+BoardWidget::BoardWidget(QWidget* parent) :
+    QWidget(parent),
+    board(GameBoard(this))
+{  }
 
-void BoardWidget::paintEvent(QPaintEvent* event) {
-
-    QWidget::paintEvent(event);
+void BoardWidget::paintEvent(QPaintEvent*) {
+    QPainter painter(this);
 }

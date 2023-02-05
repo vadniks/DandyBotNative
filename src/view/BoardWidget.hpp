@@ -2,7 +2,7 @@
 #pragma once
 
 #include <QWidget>
-#include <QVBoxLayout>
+#include "../logic/GameBoard.hpp"
 
 class BoardWidget : public QWidget {
     Q_OBJECT
@@ -12,6 +12,5 @@ public:
 protected:
     void paintEvent(QPaintEvent* event) override;
 private:
-    QVBoxLayout layout;
-
+    GameBoard board;
 };

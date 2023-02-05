@@ -3,6 +3,7 @@
 #include "../consts.hpp"
 
 LaunchWidget::LaunchWidget(QWidget* parent, Callback&& onStartClickedCallback) :
+    QWidget(parent),
     layout(this),
     appName(this),
     startGame(this),
@@ -16,7 +17,6 @@ LaunchWidget::LaunchWidget(QWidget* parent, Callback&& onStartClickedCallback) :
     startGame.setSizePolicy(QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
     connect(&startGame, &QPushButton::clicked, this, &LaunchWidget::onStartClicked);
 
-    setParent(parent);
     layout.setAlignment(Qt::AlignCenter);
     layout.addStretch();
     layout.addWidget(&appName);
