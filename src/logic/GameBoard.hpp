@@ -14,12 +14,14 @@ public:
     [[nodiscard]] char objectAt(unsigned row, unsigned column) const EXCEPT;
     void setAt(char object, unsigned row, unsigned column) EXCEPT;
     void move(unsigned fromRow, unsigned fromColumn, unsigned toRow, unsigned toColumn) EXCEPT;
-
-    const unsigned mRows;
-    const unsigned mColumns;
+    [[nodiscard]] unsigned rows() const;
+    [[nodiscard]] unsigned columns() const;
+    void setSize(unsigned rows, unsigned columns) EXCEPT;
 signals:
     void boardUpdated();
 private:
+    unsigned mRows;
+    unsigned mColumns;
     QVector<char> mObjects;
 public:
     enum Objects : char {
