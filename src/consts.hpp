@@ -22,6 +22,7 @@ extern const char ENEMY_MIN_OBJ;
 extern const char ENEMY_MAX_OBJ;
 extern const char BOT_OBJ;
 extern unsigned GAME_OBJECT_SIZE;
+extern c_str EMPTY_ICON;
 extern c_str BLOC_ICON;
 extern c_str COIN_ICON;
 extern c_str ENEMY_ICON;

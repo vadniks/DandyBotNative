@@ -1,6 +1,7 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
     <qresource>
+        <file>dandyBot_empty.png</file>
         <file>dandyBot_block.png</file>
         <file>dandyBot_bot.png</file>
         <file>dandyBot_coin.png</file>
