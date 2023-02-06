@@ -12,4 +12,4 @@ c_str MAP = "map";
 c_str START = "start";
 c_str STEPS = "steps";
 c_str MAPS = "maps";
-unsigned GAME_OBJECT_SIZE = 50;
+unsigned GAME_OBJECT_SIZE = 25;

@@ -3,8 +3,9 @@
 #include "BoardWidget.hpp"
 #include "../consts.hpp"
 
-BoardWidget::BoardWidget(QWidget* parent) : QWidget(parent), mBoard(nullptr) {
-
+BoardWidget::BoardWidget(QWidget* parent) : QWidget(parent), mAlgorithm(this), mBoard(nullptr) {
+    mBoard = mAlgorithm.board();
+    connect(&mAlgorithm, &GameAlgorithm::boardChanged, this, &BoardWidget::onBoardChanged);
 }
 
 void BoardWidget::setBoard(GameBoard* board) {
@@ -27,6 +28,8 @@ QRect BoardWidget::objectRect(unsigned row, unsigned column) { return {
     static_cast<signed>(column + GAME_OBJECT_SIZE)
 }; }
 
+void BoardWidget::onBoardChanged() { setBoard(mAlgorithm.board()); }
+
 void BoardWidget::paintEvent(QPaintEvent*) {
     if (mBoard == nullptr) return;
     QPainter painter(this);
@@ -36,6 +39,6 @@ void BoardWidget::paintEvent(QPaintEvent*) {
     painter.setBrush(QBrush(QColor(100, 100, 100)));
     for (unsigned row = 0; row < mBoard->mRows; row++)
         for (unsigned column = 0; column < mBoard->mColumns; column++)
-            painter.drawRect(objectRect(row, column).adjusted(5, 5, 5, 5));
+            painter.drawRect(objectRect(row, column));
     painter.restore();
 }

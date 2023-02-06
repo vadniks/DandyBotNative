@@ -9,7 +9,7 @@
 class GameBoard final : public QObject {
     Q_OBJECT
 public:
-    explicit GameBoard(QObject* parent, unsigned rows, unsigned columns, QVector<char>&& data);
+    explicit GameBoard(QObject* parent, unsigned rows, unsigned columns, QVector<char>&& objects) EXCEPT;
     [[nodiscard]] const QVector<char>& objects() const;
     [[nodiscard]] char objectAt(unsigned row, unsigned column) const EXCEPT;
     void setAt(char object, unsigned row, unsigned column) EXCEPT;

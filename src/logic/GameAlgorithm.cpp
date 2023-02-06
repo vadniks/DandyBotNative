@@ -2,7 +2,13 @@
 #include "GameAlgorithm.hpp"
 
 GameAlgorithm::GameAlgorithm(QObject* parent) : QObject(parent), mBoard(nullptr) {
-
+    mBoard = new GameBoard(this, 5, 5, {
+        '#', '#', '#', '#', '#',
+        '#', '#', '#', '#', '#',
+        '#', '#', '#', '#', '#',
+        '#', '#', '#', '#', '#',
+        '#', '#', '#', '#', '#'
+    });
 }
 
 GameAlgorithm::~GameAlgorithm() { delete mBoard; }

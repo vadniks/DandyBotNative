@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPointer>
 #include "../logic/GameBoard.hpp"
+#include "../logic/GameAlgorithm.hpp"
 
 class BoardWidget final : public QWidget {
     Q_OBJECT
@@ -12,8 +13,11 @@ public:
     void setBoard(GameBoard* board);
     [[nodiscard]] QSize sizeHint() const override;
     [[nodiscard]] static QRect objectRect(unsigned row, unsigned column);
+public slots:
+    void onBoardChanged();
 protected:
     void paintEvent(QPaintEvent* event) override;
 private:
+    GameAlgorithm mAlgorithm;
     GameBoard* mBoard;
 };

@@ -2,10 +2,10 @@
 #include <QException>
 #include "GameBoard.hpp"
 
-GameBoard::GameBoard(QObject* parent, unsigned int rows, unsigned int columns, QVector<char>&& data) :
-    QObject(parent), mRows(rows), mColumns(columns), mObjects(data)
+GameBoard::GameBoard(QObject* parent, unsigned int rows, unsigned int columns, QVector<char>&& objects) EXCEPT :
+    QObject(parent), mRows(rows), mColumns(columns), mObjects(objects)
 {
-
+    if (rows * columns != objects.size()) throw QException();
 }
 
 const QVector<char>& GameBoard::objects() const { return mObjects; }
