@@ -12,12 +12,13 @@ const QVector<char>& GameBoard::objects() const { return mObjects; }
 
 char GameBoard::objectAt(unsigned row, unsigned column) const EXCEPT {
     if (row >= mRows or column >= mColumns) throw QException();
-    return mObjects.at(row * column);
+    return mObjects.at(row * mColumns + column);
 }
 
 void GameBoard::setAt(char object, unsigned row, unsigned column) EXCEPT {
     if (row >= mRows or column >= mColumns) throw QException();
-    mObjects[row * column] = object;
+    mObjects[row * mColumns + column] = object;
+    emit boardUpdated();
 }
 
 void GameBoard::boardUpdated() {
