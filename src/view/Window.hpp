@@ -10,6 +10,6 @@ public:
     ~Window() override;
 private:
     QWidget* currentWidget;
-
+private slots:
     void onGameLaunched();
 };

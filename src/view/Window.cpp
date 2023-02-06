@@ -5,7 +5,10 @@
 #include "../consts.hpp"
 
 Window::Window() {
-    setCentralWidget(currentWidget = new LaunchWidget(this, [this](){ onGameLaunched(); }));
+    currentWidget = new LaunchWidget(this);
+    connect(((LaunchWidget*) currentWidget), &LaunchWidget::onStartClicked, this, &Window::onGameLaunched);
+    setCentralWidget(currentWidget);
+
     setFixedSize(static_cast<signed>(APP_WIDTH), static_cast<signed>(APP_HEIGHT));
     setWindowTitle(APP_NAME);
     setWindowIcon(QIcon(APP_ICON));

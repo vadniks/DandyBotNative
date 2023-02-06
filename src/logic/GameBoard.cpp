@@ -20,7 +20,3 @@ void GameBoard::setAt(char object, unsigned row, unsigned column) EXCEPT {
     mObjects[row * mColumns + column] = object;
     emit boardUpdated();
 }
-
-void GameBoard::boardUpdated() {
-
-}

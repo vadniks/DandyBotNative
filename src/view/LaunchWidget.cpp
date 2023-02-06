@@ -2,12 +2,11 @@
 #include "LaunchWidget.hpp"
 #include "../consts.hpp"
 
-LaunchWidget::LaunchWidget(QWidget* parent, Callback&& onStartClickedCallback) :
+LaunchWidget::LaunchWidget(QWidget* parent) :
     QWidget(parent),
     layout(this),
     appName(this),
-    startGame(this),
-    onStartClickedCallback(onStartClickedCallback)
+    startGame(this)
 {
     appName.setText(APP_NAME);
     appName.setFont(QFont(appName.font().family(), 12));
@@ -23,5 +22,3 @@ LaunchWidget::LaunchWidget(QWidget* parent, Callback&& onStartClickedCallback) :
     layout.addWidget(&startGame);
     layout.addStretch();
 }
-
-void LaunchWidget::onStartClicked() { onStartClickedCallback(); }

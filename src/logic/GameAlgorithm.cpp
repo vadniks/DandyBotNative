@@ -14,7 +14,3 @@ void GameAlgorithm::setBoard(GameBoard* board) {
     mBoard = board;
     emit boardChanged();
 }
-
-void GameAlgorithm::boardChanged() {
-
-}
