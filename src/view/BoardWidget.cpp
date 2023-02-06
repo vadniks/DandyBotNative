@@ -54,8 +54,11 @@ void BoardWidget::paintEvent(QPaintEvent*) {
     QPainter painter(this);
 
     painter.save();
-    painter.setPen(QPen(QColor(0, 0, 0)));
-    painter.setBrush(QBrush(QColor(100, 100, 100)));
+    auto size = sizeHint();
+    painter.fillRect(QRect(0, 0, size.width(), size.height()), QColor::fromRgb(0, 0, 0));
+    painter.restore();
+
+    painter.save();
     for (unsigned row = 0; row < mBoard->rows(); row++)
         for (unsigned column = 0; column < mBoard->columns(); column++)
             iconOf(mBoard->objectAt(row, column)).paint(&painter, objectRect(row, column), Qt::AlignCenter);
