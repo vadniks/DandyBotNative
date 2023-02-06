@@ -4,13 +4,14 @@
 #include "../consts.hpp"
 
 BoardWidget::BoardWidget(QWidget* parent) : QWidget(parent), mAlgorithm(this), mBoard(nullptr) {
-    mBoard = mAlgorithm.board();
     connect(&mAlgorithm, &GameAlgorithm::boardChanged, this, &BoardWidget::onBoardChanged);
+    setBoard(mAlgorithm.board());
 }
 
 void BoardWidget::setBoard(GameBoard* board) {
     if (mBoard != nullptr) delete mBoard;
     mBoard = board;
+    connect(mBoard, &GameBoard::boardUpdated, this, &BoardWidget::onBoardChanged);
     updateGeometry();
 }
 
