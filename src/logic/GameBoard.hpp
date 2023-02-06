@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QVector>
+#include <QMap>
 #include <functional>
 #include "../util.hpp"
 
@@ -23,11 +24,4 @@ private:
     unsigned mRows;
     unsigned mColumns;
     QVector<char> mObjects;
-public:
-    enum Objects : char {
-        EMPTY = ' ',
-        BLOCK = '#',
-        COIN = '1',
-        UNKNOWN = '\0'
-    };
 };

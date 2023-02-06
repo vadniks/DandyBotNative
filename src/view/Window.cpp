@@ -6,7 +6,7 @@
 
 Window::Window() {
     currentWidget = new LaunchWidget(this);
-    connect(((LaunchWidget*) currentWidget), &LaunchWidget::onStartClicked, this, &Window::onGameLaunched);
+    connect(dynamic_cast<LaunchWidget*>(currentWidget), &LaunchWidget::onStartClicked, this, &Window::onGameLaunched);
     setCentralWidget(currentWidget);
 
     setFixedSize(static_cast<signed>(APP_WIDTH), static_cast<signed>(APP_HEIGHT));
@@ -20,7 +20,7 @@ Window::~Window() { delete currentWidget; }
 void Window::onGameLaunched() {
     delete currentWidget;
     currentWidget = new BoardWidget(this);
-    connect(((BoardWidget*) currentWidget), &BoardWidget::sizeChanged, this, &Window::onSizeChanged);
+    connect(dynamic_cast<BoardWidget*>(currentWidget), &BoardWidget::sizeChanged, this, &Window::onSizeChanged);
     setCentralWidget(currentWidget);
     setFixedSize(currentWidget->sizeHint());
 }

@@ -24,7 +24,7 @@ void GameBoard::setAt(char object, unsigned row, unsigned column) EXCEPT {
 
 void GameBoard::move(unsigned fromRow, unsigned fromColumn, unsigned toRow, unsigned toColumn) EXCEPT {
     setAt(objectAt(fromRow, fromColumn), toRow, toColumn);
-    setAt(Objects::EMPTY, fromRow, fromColumn);
+    setAt(EMPTY_OBJ, fromRow, fromColumn);
 }
 
 unsigned GameBoard::rows() const { return mRows; }

@@ -22,4 +22,5 @@ protected:
 private:
     GameAlgorithm mAlgorithm;
     GameBoard* mBoard;
+    QMap<char, QIcon> mObjectDescriptions;
 };
