@@ -12,4 +12,5 @@ private:
     QWidget* currentWidget;
 private slots:
     void onGameLaunched();
+    void onSizeChanged(unsigned width, unsigned height);
 };

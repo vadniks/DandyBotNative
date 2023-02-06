@@ -9,10 +9,12 @@ BoardWidget::BoardWidget(QWidget* parent) : QWidget(parent), mAlgorithm(this), m
 }
 
 void BoardWidget::setBoard(GameBoard* board) {
-    if (mBoard != nullptr) delete mBoard;
+    delete mBoard;
     mBoard = board;
     connect(mBoard, &GameBoard::boardUpdated, this, &BoardWidget::onBoardChanged);
+    setFixedSize(sizeHint());
     updateGeometry();
+    emit sizeChanged(mBoard->columns() * GAME_OBJECT_SIZE, mBoard->rows() * GAME_OBJECT_SIZE);
 }
 
 QSize BoardWidget::sizeHint() const {

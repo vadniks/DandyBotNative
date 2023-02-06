@@ -15,6 +15,8 @@ public:
     [[nodiscard]] static QRect objectRect(unsigned row, unsigned column);
 public slots:
     void onBoardChanged();
+signals:
+    void sizeChanged(unsigned width, unsigned height);
 protected:
     void paintEvent(QPaintEvent* event) override;
 private:

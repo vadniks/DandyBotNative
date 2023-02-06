@@ -19,5 +19,10 @@ Window::~Window() { delete currentWidget; }
 
 void Window::onGameLaunched() {
     delete currentWidget;
-    setCentralWidget(currentWidget = new BoardWidget(this));
+    currentWidget = new BoardWidget(this);
+    connect(((BoardWidget*) currentWidget), &BoardWidget::sizeChanged, this, &Window::onSizeChanged);
+    setCentralWidget(currentWidget);
 }
+
+void Window::onSizeChanged(unsigned int width, unsigned int height)
+{ setFixedSize(static_cast<signed>(width), static_cast<signed>(height)); }
