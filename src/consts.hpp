@@ -14,3 +14,4 @@ extern c_str MAP;
 extern c_str START;
 extern c_str STEPS;
 extern c_str MAPS;
+extern unsigned GAME_OBJECT_SIZE;

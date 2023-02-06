@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QVector>
+#include <functional>
 #include "../util.hpp"
 
 class GameBoard final : public QObject {

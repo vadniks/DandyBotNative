@@ -10,6 +10,8 @@ class BoardWidget final : public QWidget {
 public:
     explicit BoardWidget(QWidget* parent);
     void setBoard(GameBoard* board);
+    [[nodiscard]] QSize sizeHint() const override;
+    [[nodiscard]] static QRect objectRect(unsigned row, unsigned column);
 protected:
     void paintEvent(QPaintEvent* event) override;
 private:
