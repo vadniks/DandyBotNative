@@ -2,14 +2,13 @@
 #include <QPainter>
 #include "BoardWidget.hpp"
 
-BoardWidget::BoardWidget(QWidget* parent) : QWidget(parent) {
+BoardWidget::BoardWidget(QWidget* parent) : QWidget(parent), mBoard(nullptr) {
 
 }
 
 void BoardWidget::setBoard(GameBoard* board) {
     if (board == mBoard) return;
-    if (!mBoard.isNull())
-        mBoard->disconnect(this);
+    if (mBoard != nullptr) delete mBoard;
     mBoard = board;
     updateGeometry();
 }

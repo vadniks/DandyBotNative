@@ -4,7 +4,7 @@
 #include <QObject>
 #include "GameBoard.hpp"
 
-class GameAlgorithm : public QObject {
+class GameAlgorithm final : public QObject {
     Q_OBJECT
 public:
     explicit GameAlgorithm(QObject* parent);
