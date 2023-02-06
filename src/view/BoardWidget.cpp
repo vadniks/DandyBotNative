@@ -14,7 +14,9 @@ void BoardWidget::setBoard(GameBoard* board) {
     connect(mBoard, &GameBoard::boardUpdated, this, &BoardWidget::onBoardChanged);
     setFixedSize(sizeHint());
     updateGeometry();
-    emit sizeChanged(mBoard->columns() * GAME_OBJECT_SIZE, mBoard->rows() * GAME_OBJECT_SIZE);
+
+    auto size = sizeHint();
+    emit sizeChanged(size.width(), size.height());
 }
 
 QSize BoardWidget::sizeHint() const {

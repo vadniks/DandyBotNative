@@ -22,6 +22,7 @@ void Window::onGameLaunched() {
     currentWidget = new BoardWidget(this);
     connect(((BoardWidget*) currentWidget), &BoardWidget::sizeChanged, this, &Window::onSizeChanged);
     setCentralWidget(currentWidget);
+    setFixedSize(currentWidget->sizeHint());
 }
 
 void Window::onSizeChanged(unsigned int width, unsigned int height)
