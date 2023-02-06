@@ -20,6 +20,8 @@ signals:
 protected:
     void paintEvent(QPaintEvent* event) override;
 private:
+    QIcon iconOf(char object);
+
     GameAlgorithm mAlgorithm;
     GameBoard* mBoard;
     QMap<char, QIcon> mObjectDescriptions;
