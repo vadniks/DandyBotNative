@@ -2,13 +2,12 @@
 #pragma once
 
 #include <QObject>
-#include "GameData.hpp"
 
 class GameBoard : public QObject {
     Q_OBJECT
 public:
-    explicit GameBoard(QObject* parent);
+    explicit GameBoard(QObject* parent, unsigned rows, unsigned columns);
 
-    const GameData data;
-    const GameLevel* currentLevel;
+    const unsigned mRows;
+    const unsigned mColumns;
 };
