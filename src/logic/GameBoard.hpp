@@ -12,6 +12,7 @@ public:
     [[nodiscard]] const QVector<char>& objects() const;
     [[nodiscard]] char objectAt(unsigned row, unsigned column) const EXCEPT;
     void setAt(char object, unsigned row, unsigned column) EXCEPT;
+    void move(unsigned fromRow, unsigned fromColumn, unsigned toRow, unsigned toColumn) EXCEPT;
 
     const unsigned mRows;
     const unsigned mColumns;
