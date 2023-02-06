@@ -22,10 +22,10 @@ QSize BoardWidget::sizeHint() const {
 }
 
 QRect BoardWidget::objectRect(unsigned row, unsigned column) { return {
-    static_cast<signed>(row),
-    static_cast<signed>(column),
-    static_cast<signed>(row + GAME_OBJECT_SIZE),
-    static_cast<signed>(column + GAME_OBJECT_SIZE)
+    static_cast<signed>(row * GAME_OBJECT_SIZE),
+    static_cast<signed>(column * GAME_OBJECT_SIZE),
+    static_cast<signed>(GAME_OBJECT_SIZE),
+    static_cast<signed>(GAME_OBJECT_SIZE)
 }; }
 
 void BoardWidget::onBoardChanged() { setBoard(mAlgorithm.board()); }
@@ -35,7 +35,7 @@ void BoardWidget::paintEvent(QPaintEvent*) {
     QPainter painter(this);
 
     painter.save();
-    painter.setPen(QPen(QColor(255, 255, 255)));
+    painter.setPen(QPen(QColor(0, 0, 0)));
     painter.setBrush(QBrush(QColor(100, 100, 100)));
     for (unsigned row = 0; row < mBoard->mRows; row++)
         for (unsigned column = 0; column < mBoard->mColumns; column++)
