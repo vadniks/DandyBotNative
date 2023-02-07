@@ -13,6 +13,7 @@ public:
     ~GameAlgorithm() override;
     [[nodiscard]] GameBoard* board() const;
     void setBoard(GameBoard* board);
+    const QMap<char, QIcon>& objectDescriptions();
 signals:
     void boardChanged();
 private:
@@ -20,4 +21,5 @@ private:
 
     GameBoard* mBoard;
     QVector<const GameLevel*> mLevels;
+    QMap<char, QIcon> mObjectDescriptions;
 };

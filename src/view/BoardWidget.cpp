@@ -5,15 +5,6 @@
 
 BoardWidget::BoardWidget(QWidget* parent) : QWidget(parent), mAlgorithm(this), mBoard(nullptr) {
     connect(&mAlgorithm, &GameAlgorithm::boardChanged, this, &BoardWidget::onBoardChanged);
-
-    mObjectDescriptions[EMPTY_OBJ] = QIcon(EMPTY_ICON);
-    mObjectDescriptions[BLOC_OBJ] = QIcon(BLOC_ICON);
-    for (char i = COIN_MIN_OBJ; i <= COIN_MAX_OBJ; i++)
-        mObjectDescriptions[i] = QIcon(COIN_ICON);
-    for (char i = ENEMY_MIN_OBJ; i <= ENEMY_MAX_OBJ; i++)
-        mObjectDescriptions[i] = QIcon(ENEMY_ICON);
-    mObjectDescriptions[BOT_OBJ] = QIcon(BOT_ICON);
-
     setBoard(mAlgorithm.board());
 }
 
@@ -65,4 +56,4 @@ void BoardWidget::paintEvent(QPaintEvent*) {
     painter.restore();
 }
 
-QIcon BoardWidget::iconOf(char object) { return mObjectDescriptions.value(object); }
+QIcon BoardWidget::iconOf(char object) { return mAlgorithm.objectDescriptions().value(object); }
