@@ -5,6 +5,7 @@
 #include <QJsonArray>
 #include <QIcon>
 #include <QMessageBox>
+#include <QApplication>
 #include "GameAlgorithm.hpp"
 #include "../Exception.hpp"
 #include "../consts.hpp"
@@ -128,9 +129,10 @@ void GameAlgorithm::onPlayerScoreUpdated() {
         QMessageBox box(dynamic_cast<QWidget*>(parent()));
         box.setModal(true);
         box.setText(YOU_WON);
+        box.setBaseSize(400, 200);
         box.exec();
 
-        exit(0);
+        QApplication::quit();
     } else {
         mCurrentLevelId++;
         setBoard(makeBoard(currentLevel()));
