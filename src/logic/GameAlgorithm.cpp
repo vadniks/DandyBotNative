@@ -52,11 +52,13 @@ void GameAlgorithm::onKeyPressed(Keys key) {
         newColumn = mPlayer->column,
         rows = mBoard->rows(),
         columns = mBoard->columns();
+    char object = 0;
 
     const auto isBlock = [&](){ return mBoard->objectAt(newRow, newColumn) == BLOC_OBJ; };
 
+    const auto setObject = [&](){ object = mBoard->objectAt(newRow, newColumn); };
+
     const auto checkNHandleCoin = [&](){
-        const auto object = mBoard->objectAt(newRow, newColumn);
         if (object >= COIN_MIN_OBJ and object <= COIN_MAX_OBJ)
             mPlayer->updateCurrentScore(object - COIN_MIN_OBJ + 1, true);
     };
@@ -66,10 +68,12 @@ void GameAlgorithm::onKeyPressed(Keys key) {
             if ((newRow = mPlayer->row - 1) >= rows) break;
             if (isBlock()) break;
 
-            checkNHandleCoin();
+            setObject();
 
             mBoard->move(mPlayer->row, mPlayer->column, newRow, newColumn);
             mPlayer->row = newRow;
+
+            checkNHandleCoin();
 
             emit boardChanged();
             break;
@@ -77,10 +81,12 @@ void GameAlgorithm::onKeyPressed(Keys key) {
             if ((newColumn = mPlayer->column - 1) >= columns) break;
             if (isBlock()) break;
 
-            checkNHandleCoin();
+            setObject();
 
             mBoard->move(mPlayer->row, mPlayer->column, newRow, newColumn);
             mPlayer->column = newColumn;
+
+            checkNHandleCoin();
 
             emit boardChanged();
             break;
@@ -88,10 +94,12 @@ void GameAlgorithm::onKeyPressed(Keys key) {
             if ((newRow = mPlayer->row + 1) >= rows) break;
             if (isBlock()) break;
 
-            checkNHandleCoin();
+            setObject();
 
             mBoard->move(mPlayer->row, mPlayer->column, newRow, newColumn);
             mPlayer->row = newRow;
+
+            checkNHandleCoin();
 
             emit boardChanged();
             break;
@@ -99,10 +107,12 @@ void GameAlgorithm::onKeyPressed(Keys key) {
             if ((newColumn = mPlayer->column + 1) >= columns) break;
             if (isBlock()) break;
 
-            checkNHandleCoin();
+            setObject();
 
             mBoard->move(mPlayer->row, mPlayer->column, newRow, newColumn);
             mPlayer->column = newColumn;
+
+            checkNHandleCoin();
 
             emit boardChanged();
             break;
@@ -110,7 +120,7 @@ void GameAlgorithm::onKeyPressed(Keys key) {
 }
 
 void GameAlgorithm::onPlayerScoreUpdated() {
-    if (mPlayer->currentScore() != currentLevel()->steps / 10) return;
+    if (mPlayer->currentScore() != currentLevel()->steps) return;
 
     if (mCurrentLevelId == mLevels.size() - 1) {
         mHasWon = true;
@@ -145,7 +155,7 @@ void GameAlgorithm::loadGameData() EXCEPT {
         auto level = levelsArray[i].toObject();
         auto position = level[START].toArray();
         QVector<char> map;
-        unsigned rows = 0, columns = 0;
+        unsigned rows = 0, columns = 0, coins = 0;
 
         for (const QJsonValueRef& item : mapsArray[i].toArray()) {
             const auto string = item.toString();
@@ -153,8 +163,12 @@ void GameAlgorithm::loadGameData() EXCEPT {
 
             for (const QChar& qChar : string) {
                 const char chr = qChar.toLatin1();
+
                 if (!mObjectDescriptions.contains(chr))
                     throw Exception("map contains unknown character");
+
+                if (chr >= COIN_MIN_OBJ and chr <= COIN_MAX_OBJ)
+                    coins++;
 
                 map.push_back(chr);
                 stringSize++;
@@ -165,6 +179,9 @@ void GameAlgorithm::loadGameData() EXCEPT {
             columns = stringSize;
         }
 
+        const unsigned steps = level[STEPS].toInt();
+        if (coins != steps) throw Exception("amount of steps must be equal to amount of coin objects on the map");
+
         mLevels.push_back(new GameLevel(
             this,
             static_cast<unsigned>(level[MAP].toInt()),
@@ -172,7 +189,7 @@ void GameAlgorithm::loadGameData() EXCEPT {
                 static_cast<unsigned>(position[0].toInt()),
                 static_cast<unsigned>(position[1].toInt())
             ),
-            static_cast<unsigned>(level[STEPS].toInt()),
+            static_cast<unsigned>(coins),
             static_cast<QVector<char>&&>(map),
             rows,
             columns

@@ -3,26 +3,26 @@
     {
       "map": 0,
       "start": [0, 4],
-      "steps": 100
+      "steps": 10
     },
     {
       "map": 1,
-      "steps": 200,
+      "steps": 67,
       "start": [0, 10]
     },
     {
       "map": 2,
-      "steps": 200,
+      "steps": 15,
       "start": [1, 23]
     },
     {
       "map": 3,
-      "steps": 400,
+      "steps": 28,
       "start": [1, 1]
     },
     {
       "map": 4,
-      "steps": 400,
+      "steps": 120,
       "start": [8, 7]
     }
   ],
