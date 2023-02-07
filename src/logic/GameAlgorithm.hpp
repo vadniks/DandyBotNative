@@ -2,10 +2,13 @@
 #pragma once
 
 #include <QObject>
+#include <QVector>
+#include <QMap>
 #include "GameBoard.hpp"
 #include "GameLevel.hpp"
 #include "../util.hpp"
 #include "../Keys.hpp"
+#include "Player.hpp"
 
 class GameAlgorithm final : public QObject {
     Q_OBJECT
@@ -25,4 +28,5 @@ private:
     GameBoard* mBoard;
     QVector<const GameLevel*> mLevels;
     QMap<char, QIcon> mObjectDescriptions;
+    Player* mPlayer;
 };

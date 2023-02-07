@@ -8,23 +8,28 @@
 #include "../Exception.hpp"
 #include "../consts.hpp"
 
-GameAlgorithm::GameAlgorithm(QObject* parent) : QObject(parent), mBoard(nullptr) {
+GameAlgorithm::GameAlgorithm(QObject* parent) : QObject(parent), mBoard(nullptr), mPlayer(nullptr) {
     mObjectDescriptions[EMPTY_OBJ] = QIcon(EMPTY_ICON);
     mObjectDescriptions[BLOC_OBJ] = QIcon(BLOC_ICON);
     for (char i = COIN_MIN_OBJ; i <= COIN_MAX_OBJ; i++)
         mObjectDescriptions[i] = QIcon(COIN_ICON);
     for (char i = ENEMY_MIN_OBJ; i <= ENEMY_MAX_OBJ; i++)
         mObjectDescriptions[i] = QIcon(ENEMY_ICON);
-    mObjectDescriptions[BOT_OBJ] = QIcon(BOT_ICON);
+    mObjectDescriptions[PLAYER_OBJ] = QIcon(PLAYER_ICON);
 
     loadGameData();
     const auto level = mLevels[0];
     setBoard(new GameBoard(this, level->rows, level->columns, QVector<char>(level->map)));
+
+    unsigned row = level->start.second, column = level->start.first;
+    mPlayer = new Player(this, row, column);
+    mBoard->setAt(PLAYER_OBJ, row, column);
 }
 
 GameAlgorithm::~GameAlgorithm() {
     delete mBoard;
     for (const GameLevel* item : mLevels) delete item;
+    delete mPlayer;
 }
 
 GameBoard* GameAlgorithm::board() const { return mBoard; }
@@ -38,7 +43,41 @@ void GameAlgorithm::setBoard(GameBoard* board) {
 const QMap<char, QIcon>& GameAlgorithm::objectDescriptions() { return mObjectDescriptions; }
 
 void GameAlgorithm::onKeyPressed(Keys key) {
+    unsigned newRow = mPlayer->row, newColumn = mPlayer->column, rows = mBoard->rows(), columns = mBoard->columns();
+    switch (key) {
+        case Keys::W:
+            if ((newRow = mPlayer->row - 1) >= rows) break;
+            if (mBoard->objectAt(newRow, newColumn) == BLOC_OBJ) break;
 
+            mBoard->move(mPlayer->row, mPlayer->column, newRow, newColumn);
+            mPlayer->row = newRow;
+            emit boardChanged();
+            break;
+        case Keys::A:
+            if ((newColumn = mPlayer->column - 1) >= columns) break;
+            if (mBoard->objectAt(newRow, newColumn) == BLOC_OBJ) break;
+
+            mBoard->move(mPlayer->row, mPlayer->column, newRow, newColumn);
+            mPlayer->column = newColumn;
+            emit boardChanged();
+            break;
+        case Keys::S:
+            if ((newRow = mPlayer->row + 1) >= rows) break;
+            if (mBoard->objectAt(newRow, newColumn) == BLOC_OBJ) break;
+
+            mBoard->move(mPlayer->row, mPlayer->column, newRow, newColumn);
+            mPlayer->row = newRow;
+            emit boardChanged();
+            break;
+        case Keys::D:
+            if ((newColumn = mPlayer->column + 1) >= columns) break;
+            if (mBoard->objectAt(newRow, newColumn) == BLOC_OBJ) break;
+
+            mBoard->move(mPlayer->row, mPlayer->column, newRow, newColumn);
+            mPlayer->column = newColumn;
+            emit boardChanged();
+            break;
+    }
 }
 
 void GameAlgorithm::loadGameData() EXCEPT {
