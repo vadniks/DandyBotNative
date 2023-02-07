@@ -27,3 +27,4 @@ extern c_str BLOC_ICON;
 extern c_str COIN_ICON;
 extern c_str ENEMY_ICON;
 extern c_str PLAYER_ICON;
+extern c_str YOU_WON;

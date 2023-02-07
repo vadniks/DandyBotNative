@@ -4,11 +4,14 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QIcon>
+#include <QMessageBox>
 #include "GameAlgorithm.hpp"
 #include "../Exception.hpp"
 #include "../consts.hpp"
 
-GameAlgorithm::GameAlgorithm(QObject* parent) : QObject(parent), mBoard(nullptr), mPlayer(nullptr) {
+GameAlgorithm::GameAlgorithm(QObject* parent)
+    : QObject(parent), mBoard(nullptr), mPlayer(nullptr), mCurrentLevelId(0), mHasWon(false)
+{
     mObjectDescriptions[EMPTY_OBJ] = QIcon(EMPTY_ICON);
     mObjectDescriptions[BLOC_OBJ] = QIcon(BLOC_ICON);
     for (char i = COIN_MIN_OBJ; i <= COIN_MAX_OBJ; i++)
@@ -18,12 +21,11 @@ GameAlgorithm::GameAlgorithm(QObject* parent) : QObject(parent), mBoard(nullptr)
     mObjectDescriptions[PLAYER_OBJ] = QIcon(PLAYER_ICON);
 
     loadGameData();
-    const auto level = mLevels[0];
-    setBoard(new GameBoard(this, level->rows, level->columns, QVector<char>(level->map)));
+    setBoard(makeBoard(currentLevel()));
 
-    unsigned row = level->start.second, column = level->start.first;
-    mPlayer = new Player(this, row, column);
-    mBoard->setAt(PLAYER_OBJ, row, column);
+    mPlayer = new Player(this, 0, 0);
+    initializePlayer();
+
     connect(mPlayer, &Player::scoreUpdated, this, &GameAlgorithm::onPlayerScoreUpdated);
 }
 
@@ -44,6 +46,8 @@ void GameAlgorithm::setBoard(GameBoard* board) {
 const QMap<char, QIcon>& GameAlgorithm::objectDescriptions() { return mObjectDescriptions; }
 
 void GameAlgorithm::onKeyPressed(Keys key) {
+    if (mHasWon) return;
+
     unsigned newRow = mPlayer->row,
         newColumn = mPlayer->column,
         rows = mBoard->rows(),
@@ -106,8 +110,23 @@ void GameAlgorithm::onKeyPressed(Keys key) {
 }
 
 void GameAlgorithm::onPlayerScoreUpdated() {
-#include <QDebug>
-    qDebug() << mPlayer->currentScore();
+    if (mPlayer->currentScore() != currentLevel()->steps / 10) return;
+
+    if (mCurrentLevelId == mLevels.size() - 1) {
+        mHasWon = true;
+
+        QMessageBox box(dynamic_cast<QWidget*>(parent()));
+        box.setModal(true);
+        box.setText(YOU_WON);
+        box.exec();
+
+        exit(0);
+    } else {
+        mCurrentLevelId++;
+        setBoard(makeBoard(currentLevel()));
+        mPlayer->setCurrentScore(0);
+        initializePlayer();
+    }
 }
 
 void GameAlgorithm::loadGameData() EXCEPT {
@@ -161,4 +180,21 @@ void GameAlgorithm::loadGameData() EXCEPT {
     }
 
     file.close();
+}
+
+const GameLevel* GameAlgorithm::currentLevel() const EXCEPT {
+    if (mCurrentLevelId >= mLevels.size()) throw Exception("currentLevelId exceeds levels' size");
+    return mLevels[mCurrentLevelId];
+}
+
+GameBoard* GameAlgorithm::makeBoard(const GameLevel* level)
+{ return new GameBoard(this, level->rows, level->columns, QVector<char>(level->map)); }
+
+void GameAlgorithm::initializePlayer() {
+    const auto level = currentLevel();
+    unsigned row = level->start.second, column = level->start.first;
+
+    mPlayer->row = row;
+    mPlayer->column = column;
+    mBoard->setAt(PLAYER_OBJ, row, column);
 }

@@ -23,7 +23,12 @@ void GameBoard::setAt(char object, unsigned row, unsigned column) EXCEPT {
 }
 
 void GameBoard::move(unsigned fromRow, unsigned fromColumn, unsigned toRow, unsigned toColumn) EXCEPT {
-    setAt(objectAt(fromRow, fromColumn), toRow, toColumn);
+    const auto object = objectAt(fromRow, fromColumn);
+
+    if (object != PLAYER_OBJ and (object < ENEMY_MIN_OBJ or object > ENEMY_MAX_OBJ))
+        throw Exception("only player and enemies are allowed to be moved");
+
+    setAt(object, toRow, toColumn);
     setAt(EMPTY_OBJ, fromRow, fromColumn);
 }
 

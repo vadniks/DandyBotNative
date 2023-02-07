@@ -16,7 +16,6 @@ void BoardWidget::setBoard(GameBoard* board) {
         return;
     }
 
-    delete mBoard;
     mBoard = board;
     connect(mBoard, &GameBoard::boardUpdated, this, &BoardWidget::onBoardChanged);
     setFixedSize(sizeHint());

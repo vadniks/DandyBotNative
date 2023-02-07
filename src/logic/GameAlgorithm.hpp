@@ -25,9 +25,14 @@ public slots:
     void onPlayerScoreUpdated();
 private:
     void loadGameData() EXCEPT;
+    [[nodiscard]] const GameLevel* currentLevel() const EXCEPT;
+    [[nodiscard]] GameBoard* makeBoard(const GameLevel* level);
+    void initializePlayer();
 
     GameBoard* mBoard;
     QVector<const GameLevel*> mLevels;
     QMap<char, QIcon> mObjectDescriptions;
     Player* mPlayer;
+    unsigned mCurrentLevelId;
+    bool mHasWon;
 };
