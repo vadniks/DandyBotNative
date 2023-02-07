@@ -24,6 +24,7 @@ GameAlgorithm::GameAlgorithm(QObject* parent) : QObject(parent), mBoard(nullptr)
     unsigned row = level->start.second, column = level->start.first;
     mPlayer = new Player(this, row, column);
     mBoard->setAt(PLAYER_OBJ, row, column);
+    connect(mPlayer, &Player::scoreUpdated, this, &GameAlgorithm::onPlayerScoreUpdated);
 }
 
 GameAlgorithm::~GameAlgorithm() {
@@ -78,6 +79,10 @@ void GameAlgorithm::onKeyPressed(Keys key) {
             emit boardChanged();
             break;
     }
+}
+
+void GameAlgorithm::onPlayerScoreUpdated() {
+
 }
 
 void GameAlgorithm::loadGameData() EXCEPT {

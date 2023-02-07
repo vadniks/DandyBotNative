@@ -22,6 +22,7 @@ signals:
     void boardChanged();
 public slots:
     void onKeyPressed(Keys key);
+    void onPlayerScoreUpdated();
 private:
     void loadGameData() EXCEPT;
 

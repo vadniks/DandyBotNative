@@ -6,11 +6,17 @@
 class Player final : public QObject {
     Q_OBJECT
 public:
-    Player(QObject* parent, unsigned row, unsigned column)
-    : QObject(parent), row(row), column(column), currentScore(0), totalScore(0) {};
+    Player(QObject* parent, unsigned row, unsigned column);
+
+    [[nodiscard]] unsigned currentScore() const;
+    [[nodiscard]] unsigned totalScore() const;
+    void setCurrentScore(unsigned currentScore);
 
     unsigned row;
     unsigned column;
-    unsigned currentScore;
-    unsigned totalScore;
+signals:
+    void scoreUpdated();
+private:
+    unsigned mCurrentScore;
+    unsigned mTotalScore;
 };
