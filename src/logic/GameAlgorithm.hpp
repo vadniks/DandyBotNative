@@ -5,6 +5,7 @@
 #include "GameBoard.hpp"
 #include "GameLevel.hpp"
 #include "../util.hpp"
+#include "../Keys.hpp"
 
 class GameAlgorithm final : public QObject {
     Q_OBJECT
@@ -16,6 +17,8 @@ public:
     const QMap<char, QIcon>& objectDescriptions();
 signals:
     void boardChanged();
+public slots:
+    void onKeyPressed(Keys key);
 private:
     void loadGameData() EXCEPT;
 

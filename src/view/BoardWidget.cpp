@@ -6,6 +6,8 @@
 BoardWidget::BoardWidget(QWidget* parent) : QWidget(parent), mAlgorithm(this), mBoard(nullptr) {
     connect(&mAlgorithm, &GameAlgorithm::boardChanged, this, &BoardWidget::onBoardChanged);
     setBoard(mAlgorithm.board());
+    setFocusPolicy(Qt::FocusPolicy::StrongFocus);
+    connect(this, &BoardWidget::keyPressed, &mAlgorithm, &GameAlgorithm::onKeyPressed);
 }
 
 void BoardWidget::setBoard(GameBoard* board) {
@@ -55,5 +57,12 @@ void BoardWidget::paintEvent(QPaintEvent*) {
             iconOf(mBoard->objectAt(row, column)).paint(&painter, objectRect(row, column), Qt::AlignCenter);
     painter.restore();
 }
+
+void BoardWidget::keyPressEvent(QKeyEvent* event) { switch (event->key()) {
+    case Keys::W: emit keyPressed(Keys::W); break;
+    case Keys::A: emit keyPressed(Keys::A); break;
+    case Keys::S: emit keyPressed(Keys::S); break;
+    case Keys::D: emit keyPressed(Keys::D); break;
+} }
 
 QIcon BoardWidget::iconOf(char object) { return mAlgorithm.objectDescriptions().value(object); }

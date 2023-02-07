@@ -37,6 +37,10 @@ void GameAlgorithm::setBoard(GameBoard* board) {
 
 const QMap<char, QIcon>& GameAlgorithm::objectDescriptions() { return mObjectDescriptions; }
 
+void GameAlgorithm::onKeyPressed(Keys key) {
+
+}
+
 void GameAlgorithm::loadGameData() EXCEPT {
     auto file = QFile(GAME_DATA);
     file.open(QIODevice::ReadOnly | QIODevice::Text);
