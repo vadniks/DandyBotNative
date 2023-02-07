@@ -3,16 +3,12 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
-#include <QException>
 #include <QIcon>
 #include "GameAlgorithm.hpp"
+#include "../Exception.hpp"
 #include "../consts.hpp"
 
 GameAlgorithm::GameAlgorithm(QObject* parent) : QObject(parent), mBoard(nullptr) {
-//    QVector<char> objects;
-//    objects.fill('#', 24 * 42);
-//    setBoard(new GameBoard(this, 24, 42, static_cast<decltype(objects)&&>(objects)));
-
     mObjectDescriptions[EMPTY_OBJ] = QIcon(EMPTY_ICON);
     mObjectDescriptions[BLOC_OBJ] = QIcon(BLOC_ICON);
     for (char i = COIN_MIN_OBJ; i <= COIN_MAX_OBJ; i++)
@@ -22,7 +18,7 @@ GameAlgorithm::GameAlgorithm(QObject* parent) : QObject(parent), mBoard(nullptr)
     mObjectDescriptions[BOT_OBJ] = QIcon(BOT_ICON);
 
     loadGameData();
-    const auto level = mLevels[0];
+    const auto level = mLevels[2];
     setBoard(new GameBoard(this, level->rows, level->columns, QVector<char>(level->map)));
 }
 
@@ -51,7 +47,7 @@ void GameAlgorithm::loadGameData() EXCEPT {
     auto mapsArray = json[MAPS].toArray();
 
     const unsigned size = levelsArray.size();
-    if (size != mapsArray.size()) throw QException();
+    if (size != mapsArray.size()) throw Exception("amount of levels is greater or less than amount of maps");
 
     for (unsigned i = 0; i < size; i++) {
         auto level = levelsArray[i].toObject();
@@ -66,14 +62,14 @@ void GameAlgorithm::loadGameData() EXCEPT {
             for (const QChar& qChar : string) {
                 const char chr = qChar.toLatin1();
                 if (!mObjectDescriptions.contains(chr))
-                    throw QException();
+                    throw Exception("map contains unknown character");
 
                 map.push_back(chr);
                 stringSize++;
             }
             rows++;
 
-            if (columns != 0 and columns != stringSize) throw QException();
+            if (columns != 0 and columns != stringSize) throw Exception("row sizes must be same");
             columns = stringSize;
         }
 

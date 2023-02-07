@@ -1,6 +1,6 @@
 
-#include <QException>
 #include "GameBoard.hpp"
+#include "../Exception.hpp"
 #include "../consts.hpp"
 
 GameBoard::GameBoard(QObject* parent, unsigned rows, unsigned columns, QVector<char>&& objects) EXCEPT :
@@ -12,12 +12,12 @@ GameBoard::GameBoard(QObject* parent, unsigned rows, unsigned columns, QVector<c
 const QVector<char>& GameBoard::objects() const { return mObjects; }
 
 char GameBoard::objectAt(unsigned row, unsigned column) const EXCEPT {
-    if (row >= mRows or column >= mColumns) throw QException();
+    if (row >= mRows or column >= mColumns) throw Exception("out of bounds");
     return mObjects.at(row * mColumns + column);
 }
 
 void GameBoard::setAt(char object, unsigned row, unsigned column) EXCEPT {
-    if (row >= mRows or column >= mColumns) throw QException();
+    if (row >= mRows or column >= mColumns) throw Exception("out of bounds");
     mObjects[row * mColumns + column] = object;
     emit boardUpdated();
 }
@@ -34,7 +34,7 @@ unsigned GameBoard::columns() const { return mColumns; }
 void GameBoard::setSize(unsigned rows, unsigned columns) EXCEPT {
     if (columns * GAME_OBJECT_SIZE > APP_WIDTH
         or rows * GAME_OBJECT_SIZE > APP_HEIGHT
-        or rows * columns != mObjects.size()) throw QException();
+        or rows * columns != mObjects.size()) throw Exception("board size exceeds app's window size");
     mRows = rows;
     mColumns = columns;
     emit boardUpdated();
