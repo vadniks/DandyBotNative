@@ -5,9 +5,7 @@
 
 GameBoard::GameBoard(QObject* parent, unsigned rows, unsigned columns, QVector<char>&& objects) EXCEPT :
     QObject(parent), mRows(rows), mColumns(columns), mObjects(static_cast<decltype(objects)&&>(objects))
-{
-    setSize(rows, columns);
-}
+{ setSize(rows, columns); }
 
 const QVector<char>& GameBoard::objects() const { return mObjects; }
 
