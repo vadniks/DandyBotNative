@@ -18,7 +18,7 @@ GameAlgorithm::GameAlgorithm(QObject* parent) : QObject(parent), mBoard(nullptr)
     mObjectDescriptions[BOT_OBJ] = QIcon(BOT_ICON);
 
     loadGameData();
-    const auto level = mLevels[2];
+    const auto level = mLevels[0];
     setBoard(new GameBoard(this, level->rows, level->columns, QVector<char>(level->map)));
 }
 

@@ -6,8 +6,14 @@
 
 class Exception : public QException {
 public:
-    explicit Exception(const QString&& what) : mWhat(what) {}
-    [[nodiscard]] const char* what() const noexcept override { return mWhat.toLatin1().data(); }
+    explicit Exception(QString&& what)
+        : mWhat(static_cast<QString&&>(what))
+    {}
+
+    [[nodiscard]] c_str what()
+    const noexcept override
+    { return mWhat.toLatin1().data(); }
+
 private:
     const QString mWhat;
 };
