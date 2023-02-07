@@ -44,45 +44,70 @@ void GameAlgorithm::setBoard(GameBoard* board) {
 const QMap<char, QIcon>& GameAlgorithm::objectDescriptions() { return mObjectDescriptions; }
 
 void GameAlgorithm::onKeyPressed(Keys key) {
-    unsigned newRow = mPlayer->row, newColumn = mPlayer->column, rows = mBoard->rows(), columns = mBoard->columns();
+    unsigned newRow = mPlayer->row,
+        newColumn = mPlayer->column,
+        rows = mBoard->rows(),
+        columns = mBoard->columns();
+
+    const auto isBlock = [&](){ return mBoard->objectAt(newRow, newColumn) == BLOC_OBJ; };
+
+    const auto checkNHandleCoin = [&](){
+        const auto object = mBoard->objectAt(newRow, newColumn);
+        if (object >= COIN_MIN_OBJ and object <= COIN_MAX_OBJ)
+            mPlayer->updateCurrentScore(object - COIN_MIN_OBJ + 1, true);
+    };
+
     switch (key) {
         case Keys::W:
             if ((newRow = mPlayer->row - 1) >= rows) break;
-            if (mBoard->objectAt(newRow, newColumn) == BLOC_OBJ) break;
+            if (isBlock()) break;
+
+            checkNHandleCoin();
 
             mBoard->move(mPlayer->row, mPlayer->column, newRow, newColumn);
             mPlayer->row = newRow;
+
             emit boardChanged();
             break;
         case Keys::A:
             if ((newColumn = mPlayer->column - 1) >= columns) break;
-            if (mBoard->objectAt(newRow, newColumn) == BLOC_OBJ) break;
+            if (isBlock()) break;
+
+            checkNHandleCoin();
 
             mBoard->move(mPlayer->row, mPlayer->column, newRow, newColumn);
             mPlayer->column = newColumn;
+
             emit boardChanged();
             break;
         case Keys::S:
             if ((newRow = mPlayer->row + 1) >= rows) break;
-            if (mBoard->objectAt(newRow, newColumn) == BLOC_OBJ) break;
+            if (isBlock()) break;
+
+            checkNHandleCoin();
 
             mBoard->move(mPlayer->row, mPlayer->column, newRow, newColumn);
             mPlayer->row = newRow;
+
             emit boardChanged();
             break;
         case Keys::D:
             if ((newColumn = mPlayer->column + 1) >= columns) break;
-            if (mBoard->objectAt(newRow, newColumn) == BLOC_OBJ) break;
+            if (isBlock()) break;
+
+            checkNHandleCoin();
 
             mBoard->move(mPlayer->row, mPlayer->column, newRow, newColumn);
             mPlayer->column = newColumn;
+
             emit boardChanged();
             break;
     }
 }
 
 void GameAlgorithm::onPlayerScoreUpdated() {
-
+#include <QDebug>
+    qDebug() << mPlayer->currentScore();
 }
 
 void GameAlgorithm::loadGameData() EXCEPT {

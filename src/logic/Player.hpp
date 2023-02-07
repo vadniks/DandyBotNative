@@ -2,6 +2,7 @@
 #pragma once
 
 #include <QObject>
+#include "../util.hpp"
 
 class Player final : public QObject {
     Q_OBJECT
@@ -11,6 +12,7 @@ public:
     [[nodiscard]] unsigned currentScore() const;
     [[nodiscard]] unsigned totalScore() const;
     void setCurrentScore(unsigned currentScore);
+    void updateCurrentScore(unsigned delta, bool increment) EXCEPT;
 
     unsigned row;
     unsigned column;
