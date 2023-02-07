@@ -1,5 +1,5 @@
 /*
- * Inspired by the work of Peter Sovietov's DandyBot
+ * Inspired by the Peter Sovietov's DandyBot
  * (https://github.com/true-grue/DandyBot) which was written in 2021-2022.
  *
  * Ported to the QT framework by Vad Nik
