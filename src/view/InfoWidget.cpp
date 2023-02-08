@@ -20,11 +20,6 @@ InfoWidget::InfoWidget(QWidget* parent, const GameAlgorithm& algorithm)
     onLevelChanged(0);
 }
 
-InfoWidget::~InfoWidget() {
-    for (const QLabel* label : mEnemyLabels)
-        delete label;
-}
-
 void InfoWidget::onPlayerScoreChanged() { updateContent(); }
 
 void InfoWidget::onLevelChanged(unsigned id) { mCurrentLevel.setText(QString::asprintf("%s: %d", CURRENT_LEVEL, id)); }

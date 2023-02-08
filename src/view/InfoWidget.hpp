@@ -20,7 +20,6 @@ class InfoWidget : public QWidget {
     Q_OBJECT
 public:
     explicit InfoWidget(QWidget* parent, const GameAlgorithm& algorithm);
-    ~InfoWidget() override;
 public slots:
     void onPlayerScoreChanged();
     void onLevelChanged(unsigned id);
@@ -31,5 +30,4 @@ private:
     const GameAlgorithm& mAlgorithm;
     QLabel mCurrentLevel;
     QLabel mPlayerLabel;
-    QVector<QLabel*> mEnemyLabels;
 };

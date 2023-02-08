@@ -8,6 +8,9 @@
  * TODO: add licence
  */
 
+#pragma ide diagnostic ignored "cert-msc51-cpp"
+#pragma ide diagnostic ignored "cert-msc50-cpp"
+
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -37,9 +40,8 @@ GameAlgorithm::GameAlgorithm(QObject* parent)
 
     mPlayer = new Bot(this, 0, 0, PLAYER_OBJ);
     initializePlayer();
-//    connect(mPlayer, &Bot::scoreUpdated, this, &GameAlgorithm::checkPlayerScore);
 
-    srand(time(nullptr)); // NOLINT(cert-msc51-cpp)
+    srand(time(nullptr));
     spawnEnemies();
 
     connect(&mTimer, &QTimer::timeout, this, &GameAlgorithm::onTick);
@@ -73,7 +75,7 @@ void GameAlgorithm::onTick() {
     if (!mKeyEvents.isEmpty())
         processKeyPress(mKeyEvents.dequeue(), mPlayer);
 
-    const auto chance = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); // NOLINT(cert-msc50-cpp)
+    const auto chance = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
     if (chance <= BOT_MOVE_CHANCE) onBotTick();
 
     checkPlayerScore();
@@ -325,4 +327,4 @@ void GameAlgorithm::spawnEnemies() {
     }
 }
 
-unsigned GameAlgorithm::randUint(unsigned topBound) { return rand() / (RAND_MAX / topBound); } // NOLINT(cert-msc50-cpp)
+unsigned GameAlgorithm::randUint(unsigned topBound) { return rand() / (RAND_MAX / topBound); }
