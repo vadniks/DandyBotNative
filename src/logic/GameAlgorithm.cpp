@@ -15,12 +15,14 @@
 #include <QIcon>
 #include <QMessageBox>
 #include <QApplication>
+#include <ctime>
+#include <cstdlib>
 #include "GameAlgorithm.hpp"
 #include "../Exception.hpp"
 #include "../consts.hpp"
 
 GameAlgorithm::GameAlgorithm(QObject* parent)
-    : QObject(parent), mBoard(nullptr), mPlayer(nullptr), mCurrentLevelId(0), mHasWon(false)
+    : QObject(parent), mBoard(nullptr), mPlayer(nullptr), mCurrentLevelId(0), mHasWon(false), mTimer(this)
 {
     mObjectDescriptions[EMPTY_OBJ] = QIcon(EMPTY_ICON);
     mObjectDescriptions[BLOC_OBJ] = QIcon(BLOC_ICON);
@@ -33,16 +35,23 @@ GameAlgorithm::GameAlgorithm(QObject* parent)
     loadGameData();
     setBoard(makeBoard(currentLevel()));
 
-    mPlayer = new Player(this, 0, 0);
+    mPlayer = new Bot(this, 0, 0, PLAYER_OBJ);
     initializePlayer();
+    connect(mPlayer, &Bot::scoreUpdated, this, &GameAlgorithm::onPlayerScoreUpdated);
 
-    connect(mPlayer, &Player::scoreUpdated, this, &GameAlgorithm::onPlayerScoreUpdated);
+    spawnEnemies();
+
+    connect(&mTimer, &QTimer::timeout, this, &GameAlgorithm::onTick);
+    mTimer.setSingleShot(false);
+    mTimer.setInterval(static_cast<signed>(TICK_INTERVAL));
+    mTimer.start();
 }
 
 GameAlgorithm::~GameAlgorithm() {
     delete mBoard;
     for (const GameLevel* item : mLevels) delete item;
     delete mPlayer;
+    for (const Bot* item : mEnemies) delete item;
 }
 
 GameBoard* GameAlgorithm::board() const { return mBoard; }
@@ -55,13 +64,13 @@ void GameAlgorithm::setBoard(GameBoard* board) {
 
 const QMap<char, QIcon>& GameAlgorithm::objectDescriptions() { return mObjectDescriptions; }
 
-const Player* GameAlgorithm::player() const { return mPlayer; }
+const Bot* GameAlgorithm::player() const { return mPlayer; }
 
 void GameAlgorithm::onKeyPressed(Keys key) {
     if (mHasWon) return;
 
-    unsigned newRow = mPlayer->row,
-        newColumn = mPlayer->column,
+    unsigned newRow = mPlayer->currentRow,
+        newColumn = mPlayer->currentColumn,
         rows = mBoard->rows(),
         columns = mBoard->columns();
     char object = 0;
@@ -76,52 +85,52 @@ void GameAlgorithm::onKeyPressed(Keys key) {
 
     switch (key) {
         case Keys::W:
-            if ((newRow = mPlayer->row - 1) >= rows) break;
+            if ((newRow = mPlayer->currentRow - 1) >= rows) break;
             if (isBlock()) break;
 
             setObject();
 
-            mBoard->move(mPlayer->row, mPlayer->column, newRow, newColumn);
-            mPlayer->row = newRow;
+            mBoard->move(mPlayer->currentRow, mPlayer->currentColumn, newRow, newColumn);
+            mPlayer->currentRow = newRow;
 
             checkNHandleCoin();
 
             emit boardChanged();
             break;
         case Keys::A:
-            if ((newColumn = mPlayer->column - 1) >= columns) break;
+            if ((newColumn = mPlayer->currentColumn - 1) >= columns) break;
             if (isBlock()) break;
 
             setObject();
 
-            mBoard->move(mPlayer->row, mPlayer->column, newRow, newColumn);
-            mPlayer->column = newColumn;
+            mBoard->move(mPlayer->currentRow, mPlayer->currentColumn, newRow, newColumn);
+            mPlayer->currentColumn = newColumn;
 
             checkNHandleCoin();
 
             emit boardChanged();
             break;
         case Keys::S:
-            if ((newRow = mPlayer->row + 1) >= rows) break;
+            if ((newRow = mPlayer->currentRow + 1) >= rows) break;
             if (isBlock()) break;
 
             setObject();
 
-            mBoard->move(mPlayer->row, mPlayer->column, newRow, newColumn);
-            mPlayer->row = newRow;
+            mBoard->move(mPlayer->currentRow, mPlayer->currentColumn, newRow, newColumn);
+            mPlayer->currentRow = newRow;
 
             checkNHandleCoin();
 
             emit boardChanged();
             break;
         case Keys::D:
-            if ((newColumn = mPlayer->column + 1) >= columns) break;
+            if ((newColumn = mPlayer->currentColumn + 1) >= columns) break;
             if (isBlock()) break;
 
             setObject();
 
-            mBoard->move(mPlayer->row, mPlayer->column, newRow, newColumn);
-            mPlayer->column = newColumn;
+            mBoard->move(mPlayer->currentRow, mPlayer->currentColumn, newRow, newColumn);
+            mPlayer->currentColumn = newColumn;
 
             checkNHandleCoin();
 
@@ -149,6 +158,11 @@ void GameAlgorithm::onPlayerScoreUpdated() {
         initializePlayer();
         emit levelChanged(mCurrentLevelId);
     }
+}
+
+void GameAlgorithm::onTick() {
+#include <QDebug>
+    qDebug() << "tick";
 }
 
 void GameAlgorithm::loadGameData() EXCEPT {
@@ -187,7 +201,7 @@ void GameAlgorithm::loadGameData() EXCEPT {
             }
             rows++;
 
-            if (columns != 0 and columns != stringSize) throw Exception("row sizes must be same");
+            if (columns != 0 and columns != stringSize) throw Exception("currentRow sizes must be same");
             columns = stringSize;
         }
 
@@ -223,7 +237,39 @@ void GameAlgorithm::initializePlayer() {
     const auto level = currentLevel();
     unsigned row = level->start.second, column = level->start.first;
 
-    mPlayer->row = row;
-    mPlayer->column = column;
+    mPlayer->currentRow = row;
+    mPlayer->currentColumn = column;
     mBoard->setAt(PLAYER_OBJ, row, column);
 }
+
+#include <QDebug>
+
+void GameAlgorithm::generateCoordsForEnemies() {
+    const unsigned rows = mBoard->rows(), columns = mBoard->columns();
+    const auto startPos = currentLevel()->start;
+
+    for (unsigned row = 0; row < rows; row++)
+        for (unsigned column = 0; column < columns; column++) {
+            const char object = mBoard->objectAt(row, column);
+
+            if ((object != BLOC_OBJ or (object < COIN_MIN_OBJ and object > COIN_MAX_OBJ))
+                and row != startPos.first and column != startPos.second)
+                mCurrentFreeCoords.push_back({ row, column });
+        }
+}
+
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "cert-msc50-cpp"
+#pragma ide diagnostic ignored "cert-msc51-cpp"
+void GameAlgorithm::spawnEnemies() {
+    mCurrentFreeCoords.clear();
+    generateCoordsForEnemies();
+    srand(time(nullptr));
+
+    for (char chr = ENEMY_MIN_OBJ; chr <= ENEMY_MAX_OBJ; chr++) {
+        const auto position = mCurrentFreeCoords[rand() / (RAND_MAX / (mCurrentFreeCoords.size() - 1))];
+        mEnemies.push_back(new Bot(this, position.first, position.second, chr));
+        mBoard->setAt(chr, position.first, position.second);
+    }
+}
+#pragma clang diagnostic pop

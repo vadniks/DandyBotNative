@@ -9,7 +9,7 @@ MainWidget::MainWidget(QWidget* parent)
     mLayout.setContentsMargins(0, 0, 0, 0);
 
     connect(&mBoardWidget, &BoardWidget::sizeChanged, this, &MainWidget::onBoardSizeChanged);
-    connect(mBoardWidget.algorithm().player(), &Player::scoreUpdated, &mInfoWidget, &InfoWidget::onPlayerScoreChanged);
+    connect(mBoardWidget.algorithm().player(), &Bot::scoreUpdated, &mInfoWidget, &InfoWidget::onPlayerScoreChanged);
     connect(&mBoardWidget.algorithm(), &GameAlgorithm::levelChanged, &mInfoWidget, &InfoWidget::onLevelChanged);
 }
 

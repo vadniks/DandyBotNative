@@ -39,3 +39,4 @@ extern c_str PLAYER_ICON;
 extern c_str YOU_WON;
 extern c_str PLAYER_SCORE;
 extern c_str CURRENT_LEVEL;
+extern unsigned TICK_INTERVAL;

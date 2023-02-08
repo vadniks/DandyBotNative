@@ -11,22 +11,24 @@
 #pragma once
 
 #include <QObject>
+#include "../util.hpp"
 
-class Player final : public QObject {
+class Bot final : public QObject {
     Q_OBJECT
 public:
-    Player(QObject* parent, unsigned row, unsigned column);
+    Bot(QObject* parent, unsigned row, unsigned column, char objectId) EXCEPT;
 
     [[nodiscard]] unsigned currentScore() const;
     [[nodiscard]] unsigned totalScore() const;
     void setCurrentScore(unsigned currentScore);
     void incrementCurrentScore(unsigned delta);
 
-    unsigned row;
-    unsigned column;
+    unsigned currentRow;
+    unsigned currentColumn;
+    const char objectId;
 signals:
     void scoreUpdated();
-private:
+protected:
     unsigned mCurrentScore;
     unsigned mTotalScore;
 };
