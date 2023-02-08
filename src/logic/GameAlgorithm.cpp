@@ -86,6 +86,7 @@ void GameAlgorithm::onPlayerScoreUpdated() {
         mPlayer->setCurrentScore(0);
         initializePlayer();
         emit levelChanged(mCurrentLevelId);
+        spawnEnemies();
     }
 }
 
@@ -208,7 +209,7 @@ void GameAlgorithm::loadGameData() EXCEPT {
         }
 
         const unsigned steps = level[STEPS].toInt();
-        if (coins != steps) throw Exception("amount of steps must be equal to amount of coin objects on the map");
+        if (coins < steps) throw Exception("amount of steps must not be greater than amount of coin objects on the map");
 
         mLevels.push_back(new GameLevel(
             this,
@@ -252,7 +253,7 @@ void GameAlgorithm::generateCoordsForEnemies() {
         for (unsigned column = 0; column < columns; column++) {
             const char object = mBoard->objectAt(row, column);
 
-            if ((object != BLOC_OBJ or (object < COIN_MIN_OBJ and object > COIN_MAX_OBJ))
+            if (object != BLOC_OBJ and (object < COIN_MIN_OBJ or object > COIN_MAX_OBJ)
                 and row != startPos.first and column != startPos.second)
                 mCurrentFreeCoords.push_back({ row, column });
         }
