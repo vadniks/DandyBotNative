@@ -10,7 +10,7 @@
 
 #pragma once
 
-enum Keys {
+enum KeyEvent {
     W = 87,
     A = 65,
     S = 83,

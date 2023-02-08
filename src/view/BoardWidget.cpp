@@ -69,10 +69,10 @@ void BoardWidget::paintEvent(QPaintEvent*) {
 }
 
 void BoardWidget::keyPressEvent(QKeyEvent* event) { switch (event->key()) {
-    case Keys::W: emit keyPressed(Keys::W); break;
-    case Keys::A: emit keyPressed(Keys::A); break;
-    case Keys::S: emit keyPressed(Keys::S); break;
-    case Keys::D: emit keyPressed(Keys::D); break;
+    case KeyEvent::W: emit keyPressed(KeyEvent::W); break;
+    case KeyEvent::A: emit keyPressed(KeyEvent::A); break;
+    case KeyEvent::S: emit keyPressed(KeyEvent::S); break;
+    case KeyEvent::D: emit keyPressed(KeyEvent::D); break;
 } }
 
 QIcon BoardWidget::iconOf(char object) { return mAlgorithm.objectDescriptions().value(object); }

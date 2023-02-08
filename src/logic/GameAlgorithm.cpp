@@ -67,7 +67,7 @@ const QMap<char, QIcon>& GameAlgorithm::objectDescriptions() { return mObjectDes
 
 const Bot* GameAlgorithm::player() const { return mPlayer; }
 
-void GameAlgorithm::onKeyPressed(Keys key) { mKeyEvents.enqueue(key); }
+void GameAlgorithm::onKeyPressed(KeyEvent key) { mKeyEvents.enqueue(key); }
 
 void GameAlgorithm::onPlayerScoreUpdated() {
     if (mPlayer->currentScore() != currentLevel()->steps) return;
@@ -96,7 +96,7 @@ void GameAlgorithm::onTick() {
         processKeyPress(mKeyEvents.dequeue());
 }
 
-void GameAlgorithm::processKeyPress(Keys key) {
+void GameAlgorithm::processKeyPress(KeyEvent key) {
     if (mHasWon) return;
 
     unsigned newRow = mPlayer->currentRow,
@@ -114,7 +114,7 @@ void GameAlgorithm::processKeyPress(Keys key) {
     };
 
     switch (key) {
-        case Keys::W:
+        case KeyEvent::W:
             if ((newRow = mPlayer->currentRow - 1) >= rows) break;
             if (isBlock()) break;
 
@@ -127,7 +127,7 @@ void GameAlgorithm::processKeyPress(Keys key) {
 
             emit boardChanged();
             break;
-        case Keys::A:
+        case KeyEvent::A:
             if ((newColumn = mPlayer->currentColumn - 1) >= columns) break;
             if (isBlock()) break;
 
@@ -140,7 +140,7 @@ void GameAlgorithm::processKeyPress(Keys key) {
 
             emit boardChanged();
             break;
-        case Keys::S:
+        case KeyEvent::S:
             if ((newRow = mPlayer->currentRow + 1) >= rows) break;
             if (isBlock()) break;
 
@@ -153,7 +153,7 @@ void GameAlgorithm::processKeyPress(Keys key) {
 
             emit boardChanged();
             break;
-        case Keys::D:
+        case KeyEvent::D:
             if ((newColumn = mPlayer->currentColumn + 1) >= columns) break;
             if (isBlock()) break;
 

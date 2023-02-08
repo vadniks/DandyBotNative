@@ -15,7 +15,7 @@
 #include <QKeyEvent>
 #include "../logic/GameBoard.hpp"
 #include "../logic/GameAlgorithm.hpp"
-#include "../Keys.hpp"
+#include "../KeyEvent.hpp"
 
 class BoardWidget final : public QWidget {
     Q_OBJECT
@@ -29,7 +29,7 @@ public slots:
     void onBoardChanged();
 signals:
     void sizeChanged(unsigned width, unsigned height);
-    void keyPressed(Keys key);
+    void keyPressed(KeyEvent key);
 protected:
     void paintEvent(QPaintEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;

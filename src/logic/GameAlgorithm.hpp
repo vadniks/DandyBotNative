@@ -18,7 +18,7 @@
 #include "GameBoard.hpp"
 #include "GameLevel.hpp"
 #include "../util.hpp"
-#include "../Keys.hpp"
+#include "../KeyEvent.hpp"
 #include "Bot.hpp"
 
 class GameAlgorithm final : public QObject {
@@ -34,11 +34,11 @@ signals:
     void boardChanged();
     void levelChanged(unsigned id);
 public slots:
-    void onKeyPressed(Keys key);
+    void onKeyPressed(KeyEvent key);
     void onPlayerScoreUpdated();
     void onTick();
 private:
-    void processKeyPress(Keys key);
+    void processKeyPress(KeyEvent key);
     void loadGameData() EXCEPT;
     [[nodiscard]] const GameLevel* currentLevel() const EXCEPT;
     [[nodiscard]] GameBoard* makeBoard(const GameLevel* level);
@@ -56,5 +56,5 @@ private:
     QTimer mTimer;
     QVector<Bot*> mEnemies;
     QVector<QPair<unsigned, unsigned>> mCurrentFreeCoords;
-    QQueue<Keys> mKeyEvents;
+    QQueue<KeyEvent> mKeyEvents;
 };
