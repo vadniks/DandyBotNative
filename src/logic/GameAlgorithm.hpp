@@ -37,8 +37,10 @@ public slots:
     void onKeyPressed(KeyEvent key);
     void onPlayerScoreUpdated();
     void onTick();
+    void onBotTick();
 private:
-    void processKeyPress(KeyEvent key);
+    void processEnemies();
+    void processKeyPress(KeyEvent key, Bot* bot);
     void loadGameData() EXCEPT;
     [[nodiscard]] const GameLevel* currentLevel() const EXCEPT;
     [[nodiscard]] GameBoard* makeBoard(const GameLevel* level);

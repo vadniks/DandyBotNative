@@ -93,74 +93,98 @@ void GameAlgorithm::onPlayerScoreUpdated() {
 
 void GameAlgorithm::onTick() {
     if (!mKeyEvents.isEmpty())
-        processKeyPress(mKeyEvents.dequeue());
+        processKeyPress(mKeyEvents.dequeue(), mPlayer);
+
+    const auto chance = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); // NOLINT(cert-msc50-cpp)
+    if (chance <= BOT_MOVE_CHANCE) onBotTick();
 }
 
-void GameAlgorithm::processKeyPress(KeyEvent key) {
+void GameAlgorithm::onBotTick() { processEnemies(); }
+
+void GameAlgorithm::processEnemies() {
+    for (Bot* enemy : mEnemies) {
+        KeyEvent key;
+        switch (randUint(4)) {
+            case 0: key = KeyEvent::W; break;
+            case 1: key = KeyEvent::A; break;
+            case 2: key = KeyEvent::S; break;
+            case 3: key = KeyEvent::D; break;
+        }
+        processKeyPress(key, enemy);
+    }
+}
+
+void GameAlgorithm::processKeyPress(KeyEvent key, Bot* bot) {
     if (mHasWon) return;
 
-    unsigned newRow = mPlayer->currentRow,
-        newColumn = mPlayer->currentColumn,
+    unsigned newRow = bot->currentRow,
+        newColumn = bot->currentColumn,
         rows = mBoard->rows(),
         columns = mBoard->columns();
     char object = 0;
 
-    const auto isBlock = [&](){ return mBoard->objectAt(newRow, newColumn) == BLOC_OBJ; };
+    const auto isBlockOrBot = [&](){
+        const char object = mBoard->objectAt(newRow, newColumn);
+        return object == BLOC_OBJ
+            or (object >= ENEMY_MIN_OBJ and object <= ENEMY_MAX_OBJ)
+            or object == PLAYER_OBJ;
+    };
+
     const auto setObject = [&](){ object = mBoard->objectAt(newRow, newColumn); };
 
     const auto checkNHandleCoin = [&](){
         if (object >= COIN_MIN_OBJ and object <= COIN_MAX_OBJ)
-            mPlayer->incrementCurrentScore(object - COIN_MIN_OBJ + 1);
+            bot->incrementCurrentScore(object - COIN_MIN_OBJ + 1);
     };
 
     switch (key) {
         case KeyEvent::W:
-            if ((newRow = mPlayer->currentRow - 1) >= rows) break;
-            if (isBlock()) break;
+            if ((newRow = bot->currentRow - 1) >= rows) break;
+            if (isBlockOrBot()) break;
 
             setObject();
 
-            mBoard->move(mPlayer->currentRow, mPlayer->currentColumn, newRow, newColumn);
-            mPlayer->currentRow = newRow;
+            mBoard->move(bot->currentRow, bot->currentColumn, newRow, newColumn);
+            bot->currentRow = newRow;
 
             checkNHandleCoin();
 
             emit boardChanged();
             break;
         case KeyEvent::A:
-            if ((newColumn = mPlayer->currentColumn - 1) >= columns) break;
-            if (isBlock()) break;
+            if ((newColumn = bot->currentColumn - 1) >= columns) break;
+            if (isBlockOrBot()) break;
 
             setObject();
 
-            mBoard->move(mPlayer->currentRow, mPlayer->currentColumn, newRow, newColumn);
-            mPlayer->currentColumn = newColumn;
+            mBoard->move(bot->currentRow, bot->currentColumn, newRow, newColumn);
+            bot->currentColumn = newColumn;
 
             checkNHandleCoin();
 
             emit boardChanged();
             break;
         case KeyEvent::S:
-            if ((newRow = mPlayer->currentRow + 1) >= rows) break;
-            if (isBlock()) break;
+            if ((newRow = bot->currentRow + 1) >= rows) break;
+            if (isBlockOrBot()) break;
 
             setObject();
 
-            mBoard->move(mPlayer->currentRow, mPlayer->currentColumn, newRow, newColumn);
-            mPlayer->currentRow = newRow;
+            mBoard->move(bot->currentRow, bot->currentColumn, newRow, newColumn);
+            bot->currentRow = newRow;
 
             checkNHandleCoin();
 
             emit boardChanged();
             break;
         case KeyEvent::D:
-            if ((newColumn = mPlayer->currentColumn + 1) >= columns) break;
-            if (isBlock()) break;
+            if ((newColumn = bot->currentColumn + 1) >= columns) break;
+            if (isBlockOrBot()) break;
 
             setObject();
 
-            mBoard->move(mPlayer->currentRow, mPlayer->currentColumn, newRow, newColumn);
-            mPlayer->currentColumn = newColumn;
+            mBoard->move(bot->currentRow, bot->currentColumn, newRow, newColumn);
+            bot->currentColumn = newColumn;
 
             checkNHandleCoin();
 

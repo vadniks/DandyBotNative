@@ -39,3 +39,4 @@ c_str YOU_WON = "You has won";
 c_str PLAYER_SCORE = "Player score";
 c_str CURRENT_LEVEL = "Current level";
 unsigned TICK_INTERVAL = 25;
+float BOT_MOVE_CHANCE = 0.05;

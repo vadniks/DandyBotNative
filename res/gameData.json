@@ -3,27 +3,32 @@
     {
       "map": 0,
       "steps": 10,
-      "start": [0, 4]
+      "start": [0, 4],
+      "bots": 2
     },
     {
       "map": 1,
       "steps": 67,
-      "start": [0, 10]
+      "start": [0, 10],
+      "bots": 5
     },
     {
       "map": 2,
       "steps": 15,
-      "start": [1, 23]
+      "start": [1, 23],
+      "bots": 5
     },
     {
       "map": 3,
       "steps": 28,
-      "start": [1, 1]
+      "start": [1, 1],
+      "bots": 5
     },
     {
       "map": 4,
       "steps": 120,
-      "start": [8, 7]
+      "start": [8, 7],
+      "bots": 2
     }
   ],
   "maps": [
