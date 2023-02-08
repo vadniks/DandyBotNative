@@ -27,6 +27,7 @@ public:
     [[nodiscard]] GameBoard* board() const;
     void setBoard(GameBoard* board);
     const QMap<char, QIcon>& objectDescriptions();
+    [[nodiscard]] const Player* player() const;
 signals:
     void boardChanged();
 public slots:

@@ -55,6 +55,8 @@ void GameAlgorithm::setBoard(GameBoard* board) {
 
 const QMap<char, QIcon>& GameAlgorithm::objectDescriptions() { return mObjectDescriptions; }
 
+const Player* GameAlgorithm::player() const { return mPlayer; }
+
 void GameAlgorithm::onKeyPressed(Keys key) {
     if (mHasWon) return;
 
@@ -65,7 +67,6 @@ void GameAlgorithm::onKeyPressed(Keys key) {
     char object = 0;
 
     const auto isBlock = [&](){ return mBoard->objectAt(newRow, newColumn) == BLOC_OBJ; };
-
     const auto setObject = [&](){ object = mBoard->objectAt(newRow, newColumn); };
 
     const auto checkNHandleCoin = [&](){
@@ -138,7 +139,6 @@ void GameAlgorithm::onPlayerScoreUpdated() {
         QMessageBox box(dynamic_cast<QWidget*>(parent()));
         box.setModal(true);
         box.setText(YOU_WON);
-        box.setBaseSize(400, 200);
         box.exec();
 
         QApplication::quit();

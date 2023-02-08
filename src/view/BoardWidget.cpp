@@ -48,6 +48,8 @@ QRect BoardWidget::objectRect(unsigned row, unsigned column) { return {
     static_cast<signed>(GAME_OBJECT_SIZE)
 }; }
 
+const GameAlgorithm& BoardWidget::algorithm() const { return mAlgorithm; }
+
 void BoardWidget::onBoardChanged() { setBoard(mAlgorithm.board()); }
 
 void BoardWidget::paintEvent(QPaintEvent*) {

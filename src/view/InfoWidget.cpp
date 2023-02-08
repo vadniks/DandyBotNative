@@ -9,3 +9,19 @@
  */
 
 #include "InfoWidget.hpp"
+
+InfoWidget::InfoWidget(QWidget* parent, const GameAlgorithm& algorithm) : QWidget(parent), mAlgorithm(algorithm) {
+    setSizePolicy(QSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed));
+    mLayout.setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
+    mLayout.addWidget(&mPlayerLabel);
+    updateContent();
+}
+
+InfoWidget::~InfoWidget() {
+    for (const QLabel* label : mEnemyLabels)
+        delete label;
+}
+
+void InfoWidget::updateContent() {
+    mPlayerLabel.setText(QString::asprintf("%d", mAlgorithm.player()->totalScore()));
+}

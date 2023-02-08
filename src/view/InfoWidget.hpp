@@ -11,9 +11,21 @@
 #pragma once
 
 #include <QWidget>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QVector>
+#include "../logic/GameAlgorithm.hpp"
 
 class InfoWidget : public QWidget {
     Q_OBJECT
 public:
+    explicit InfoWidget(QWidget* parent, const GameAlgorithm& algorithm);
+    ~InfoWidget() override;
+private:
+    void updateContent();
 
+    QVBoxLayout mLayout;
+    const GameAlgorithm& mAlgorithm;
+    QLabel mPlayerLabel;
+    QVector<QLabel*> mEnemyLabels;
 };

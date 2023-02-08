@@ -24,6 +24,7 @@ public:
     void setBoard(GameBoard* board);
     [[nodiscard]] QSize sizeHint() const override;
     [[nodiscard]] static QRect objectRect(unsigned row, unsigned column);
+    [[nodiscard]] const GameAlgorithm& algorithm() const;
 public slots:
     void onBoardChanged();
 signals:
@@ -31,7 +32,7 @@ signals:
     void keyPressed(Keys key);
 protected:
     void paintEvent(QPaintEvent* event) override;
-    void keyPressEvent(QKeyEvent *event) override;
+    void keyPressEvent(QKeyEvent* event) override;
 private:
     QIcon iconOf(char object);
 
