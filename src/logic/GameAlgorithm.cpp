@@ -139,6 +139,12 @@ void GameAlgorithm::processKeyPress(KeyEvent key, Bot* bot) {
             bot->incrementCurrentScore(object - COIN_MIN_OBJ + 1);
     };
 
+    const auto isEnemyNearCoin = [&](){
+        const char object = mBoard->objectAt(newRow, newColumn);
+        return bot->objectId >= ENEMY_MIN_OBJ and bot->objectId <= ENEMY_MAX_OBJ
+            and object >= COIN_MIN_OBJ and object <= COIN_MAX_OBJ;
+    };
+
     switch (key) {
         case KeyEvent::W:
             if ((newRow = bot->currentRow - 1) >= rows) break;
@@ -146,10 +152,11 @@ void GameAlgorithm::processKeyPress(KeyEvent key, Bot* bot) {
 
             setObject();
 
-            mBoard->move(bot->currentRow, bot->currentColumn, newRow, newColumn);
-            bot->currentRow = newRow;
-
-            checkNHandleCoin();
+            if (!isEnemyNearCoin()) {
+                mBoard->move(bot->currentRow, bot->currentColumn, newRow, newColumn);
+                bot->currentRow = newRow;
+                checkNHandleCoin();
+            }
 
             emit boardChanged();
             break;
@@ -159,10 +166,11 @@ void GameAlgorithm::processKeyPress(KeyEvent key, Bot* bot) {
 
             setObject();
 
-            mBoard->move(bot->currentRow, bot->currentColumn, newRow, newColumn);
-            bot->currentColumn = newColumn;
-
-            checkNHandleCoin();
+            if (!isEnemyNearCoin()) {
+                mBoard->move(bot->currentRow, bot->currentColumn, newRow, newColumn);
+                bot->currentColumn = newColumn;
+                checkNHandleCoin();
+            }
 
             emit boardChanged();
             break;
@@ -172,10 +180,11 @@ void GameAlgorithm::processKeyPress(KeyEvent key, Bot* bot) {
 
             setObject();
 
-            mBoard->move(bot->currentRow, bot->currentColumn, newRow, newColumn);
-            bot->currentRow = newRow;
-
-            checkNHandleCoin();
+            if (!isEnemyNearCoin()) {
+                mBoard->move(bot->currentRow, bot->currentColumn, newRow, newColumn);
+                bot->currentRow = newRow;
+                checkNHandleCoin();
+            }
 
             emit boardChanged();
             break;
@@ -185,10 +194,11 @@ void GameAlgorithm::processKeyPress(KeyEvent key, Bot* bot) {
 
             setObject();
 
-            mBoard->move(bot->currentRow, bot->currentColumn, newRow, newColumn);
-            bot->currentColumn = newColumn;
-
-            checkNHandleCoin();
+            if (!isEnemyNearCoin()) {
+                mBoard->move(bot->currentRow, bot->currentColumn, newRow, newColumn);
+                bot->currentColumn = newColumn;
+                checkNHandleCoin();
+            }
 
             emit boardChanged();
             break;
@@ -300,8 +310,16 @@ void GameAlgorithm::spawnEnemies() {
     generateCoordsForEnemies();
     const auto totalEnemies = static_cast<char>(currentLevel()->enemies);
 
+    QVector<QPair<unsigned, unsigned>> usedPositions;
+
     for (char chr = ENEMY_MIN_OBJ, enemies = 0; chr <= ENEMY_MAX_OBJ and enemies < totalEnemies; chr++, enemies++) {
-        const auto position = mCurrentFreeCoords[randUint(mCurrentFreeCoords.size() - 1)];
+        QPair<unsigned, unsigned> position;
+
+        do { position = mCurrentFreeCoords[randUint(mCurrentFreeCoords.size() - 1)]; }
+        while (usedPositions.contains(position));
+
+        usedPositions.push_back(position);
+
         mEnemies.push_back(new Bot(this, position.first, position.second, chr));
         mBoard->setAt(chr, position.first, position.second);
     }
