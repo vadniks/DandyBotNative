@@ -41,3 +41,5 @@ c_str PLAYER_SCORE = "Player score";
 c_str CURRENT_LEVEL = "Current level";
 unsigned TICK_INTERVAL = 25;
 float BOT_MOVE_CHANCE = 0.05;
+float BOT_COIN_TAKE_CHANCE = 0.25;
+float PLAYER_SCORE_TO_WIN_MULTIPLIER = 0.85;

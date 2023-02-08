@@ -84,7 +84,9 @@ void GameAlgorithm::onTick() {
 void GameAlgorithm::onBotTick() { processEnemies(); }
 
 void GameAlgorithm::checkPlayerScore() {
-    if (mPlayer->currentScore() != currentLevel()->steps) return;
+    if (mPlayer->currentScore() <
+        static_cast<unsigned>(floorf(static_cast<float>(currentLevel()->steps) * PLAYER_SCORE_TO_WIN_MULTIPLIER)))
+        return;
 
     if (mCurrentLevelId == mLevels.size() - 1) {
         mHasWon = true;
@@ -147,6 +149,7 @@ void GameAlgorithm::processKeyPress(KeyEvent key, Bot* bot) {
             and object >= COIN_MIN_OBJ and object <= COIN_MAX_OBJ;
     };
 
+    const bool canTakeCoin = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) < BOT_COIN_TAKE_CHANCE;
     switch (key) {
         case KeyEvent::W:
             if ((newRow = bot->currentRow - 1) >= rows) break;
@@ -154,7 +157,7 @@ void GameAlgorithm::processKeyPress(KeyEvent key, Bot* bot) {
 
             setObject();
 
-            if (!isEnemyNearCoin()) {
+            if (!isEnemyNearCoin() or canTakeCoin) {
                 mBoard->move(bot->currentRow, bot->currentColumn, newRow, newColumn);
                 bot->currentRow = newRow;
                 checkNHandleCoin();
@@ -168,7 +171,7 @@ void GameAlgorithm::processKeyPress(KeyEvent key, Bot* bot) {
 
             setObject();
 
-            if (!isEnemyNearCoin()) {
+            if (!isEnemyNearCoin() or canTakeCoin) {
                 mBoard->move(bot->currentRow, bot->currentColumn, newRow, newColumn);
                 bot->currentColumn = newColumn;
                 checkNHandleCoin();
@@ -182,7 +185,7 @@ void GameAlgorithm::processKeyPress(KeyEvent key, Bot* bot) {
 
             setObject();
 
-            if (!isEnemyNearCoin()) {
+            if (!isEnemyNearCoin() or canTakeCoin) {
                 mBoard->move(bot->currentRow, bot->currentColumn, newRow, newColumn);
                 bot->currentRow = newRow;
                 checkNHandleCoin();
@@ -196,7 +199,7 @@ void GameAlgorithm::processKeyPress(KeyEvent key, Bot* bot) {
 
             setObject();
 
-            if (!isEnemyNearCoin()) {
+            if (!isEnemyNearCoin() or canTakeCoin) {
                 mBoard->move(bot->currentRow, bot->currentColumn, newRow, newColumn);
                 bot->currentColumn = newColumn;
                 checkNHandleCoin();

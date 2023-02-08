@@ -43,3 +43,5 @@ extern c_str PLAYER_SCORE;
 extern c_str CURRENT_LEVEL;
 extern unsigned TICK_INTERVAL;
 extern float BOT_MOVE_CHANCE;
+extern float BOT_COIN_TAKE_CHANCE;
+extern float PLAYER_SCORE_TO_WIN_MULTIPLIER;
