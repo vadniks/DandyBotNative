@@ -29,7 +29,7 @@ GameAlgorithm::GameAlgorithm(QObject* parent)
     for (char i = COIN_MIN_OBJ; i <= COIN_MAX_OBJ; i++)
         mObjectDescriptions[i] = QIcon(COIN_ICON);
     for (char i = ENEMY_MIN_OBJ; i <= ENEMY_MAX_OBJ; i++)
-        mObjectDescriptions[i] = QIcon(ENEMY_ICON);
+        mObjectDescriptions[i] = QIcon(QString::asprintf("%s%c%s", ENEMY_ICON_PREFIX, i, ICON_SUFFIX));
     mObjectDescriptions[PLAYER_OBJ] = QIcon(PLAYER_ICON);
 
     loadGameData();
@@ -66,7 +66,35 @@ const QMap<char, QIcon>& GameAlgorithm::objectDescriptions() { return mObjectDes
 
 const Bot* GameAlgorithm::player() const { return mPlayer; }
 
-void GameAlgorithm::onKeyPressed(Keys key) {
+void GameAlgorithm::onKeyPressed(Keys key) { mKeyEvents.enqueue(key); }
+
+void GameAlgorithm::onPlayerScoreUpdated() {
+    if (mPlayer->currentScore() != currentLevel()->steps) return;
+
+    if (mCurrentLevelId == mLevels.size() - 1) {
+        mHasWon = true;
+
+        QMessageBox box(dynamic_cast<QWidget*>(parent()));
+        box.setModal(true);
+        box.setText(YOU_WON);
+        box.exec();
+
+        QApplication::quit();
+    } else {
+        mCurrentLevelId++;
+        setBoard(makeBoard(currentLevel()));
+        mPlayer->setCurrentScore(0);
+        initializePlayer();
+        emit levelChanged(mCurrentLevelId);
+    }
+}
+
+void GameAlgorithm::onTick() {
+    if (!mKeyEvents.isEmpty())
+        processKeyPress(mKeyEvents.dequeue());
+}
+
+void GameAlgorithm::processKeyPress(Keys key) {
     if (mHasWon) return;
 
     unsigned newRow = mPlayer->currentRow,
@@ -137,32 +165,6 @@ void GameAlgorithm::onKeyPressed(Keys key) {
             emit boardChanged();
             break;
     }
-}
-
-void GameAlgorithm::onPlayerScoreUpdated() {
-    if (mPlayer->currentScore() != currentLevel()->steps) return;
-
-    if (mCurrentLevelId == mLevels.size() - 1) {
-        mHasWon = true;
-
-        QMessageBox box(dynamic_cast<QWidget*>(parent()));
-        box.setModal(true);
-        box.setText(YOU_WON);
-        box.exec();
-
-        QApplication::quit();
-    } else {
-        mCurrentLevelId++;
-        setBoard(makeBoard(currentLevel()));
-        mPlayer->setCurrentScore(0);
-        initializePlayer();
-        emit levelChanged(mCurrentLevelId);
-    }
-}
-
-void GameAlgorithm::onTick() {
-#include <QDebug>
-    qDebug() << "tick";
 }
 
 void GameAlgorithm::loadGameData() EXCEPT {
@@ -242,8 +244,6 @@ void GameAlgorithm::initializePlayer() {
     mBoard->setAt(PLAYER_OBJ, row, column);
 }
 
-#include <QDebug>
-
 void GameAlgorithm::generateCoordsForEnemies() {
     const unsigned rows = mBoard->rows(), columns = mBoard->columns();
     const auto startPos = currentLevel()->start;
@@ -258,18 +258,14 @@ void GameAlgorithm::generateCoordsForEnemies() {
         }
 }
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "cert-msc50-cpp"
-#pragma ide diagnostic ignored "cert-msc51-cpp"
 void GameAlgorithm::spawnEnemies() {
     mCurrentFreeCoords.clear();
     generateCoordsForEnemies();
-    srand(time(nullptr));
+    srand(time(nullptr)); // NOLINT(cert-msc51-cpp)
 
     for (char chr = ENEMY_MIN_OBJ; chr <= ENEMY_MAX_OBJ; chr++) {
-        const auto position = mCurrentFreeCoords[rand() / (RAND_MAX / (mCurrentFreeCoords.size() - 1))];
+        const auto position = mCurrentFreeCoords[rand() / (RAND_MAX / (mCurrentFreeCoords.size() - 1))]; // NOLINT(cert-msc50-cpp)
         mEnemies.push_back(new Bot(this, position.first, position.second, chr));
         mBoard->setAt(chr, position.first, position.second);
     }
 }
-#pragma clang diagnostic pop

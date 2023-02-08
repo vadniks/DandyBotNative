@@ -6,7 +6,13 @@
         <file>dandyBot_player.png</file>
         <file>dandyBot_coin.png</file>
         <file>dandyBot_coins.png</file>
-        <file>dandyBot_enemy.png</file>
+        <file>dandyBot_enemy_a.png</file>
+        <file>dandyBot_enemy_b.png</file>
+        <file>dandyBot_enemy_c.png</file>
+        <file>dandyBot_enemy_d.png</file>
+        <file>dandyBot_enemy_e.png</file>
+        <file>dandyBot_enemy_f.png</file>
+        <file>dandyBot_enemy_g.png</file>
         <file>gameData.json</file>
     </qresource>
 </RCC>

@@ -14,6 +14,7 @@
 #include <QVector>
 #include <QMap>
 #include <QTimer>
+#include <QQueue>
 #include "GameBoard.hpp"
 #include "GameLevel.hpp"
 #include "../util.hpp"
@@ -37,6 +38,7 @@ public slots:
     void onPlayerScoreUpdated();
     void onTick();
 private:
+    void processKeyPress(Keys key);
     void loadGameData() EXCEPT;
     [[nodiscard]] const GameLevel* currentLevel() const EXCEPT;
     [[nodiscard]] GameBoard* makeBoard(const GameLevel* level);
@@ -53,4 +55,5 @@ private:
     QTimer mTimer;
     QVector<Bot*> mEnemies;
     QVector<QPair<unsigned, unsigned>> mCurrentFreeCoords;
+    QQueue<Keys> mKeyEvents;
 };
