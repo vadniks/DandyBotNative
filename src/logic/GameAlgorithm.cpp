@@ -147,6 +147,7 @@ void GameAlgorithm::onPlayerScoreUpdated() {
         setBoard(makeBoard(currentLevel()));
         mPlayer->setCurrentScore(0);
         initializePlayer();
+        emit levelChanged(mCurrentLevelId);
     }
 }
 

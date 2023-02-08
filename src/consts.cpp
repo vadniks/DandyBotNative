@@ -36,3 +36,4 @@ c_str ENEMY_ICON = ":/dandyBot_enemy.png";
 c_str PLAYER_ICON = ":/dandyBot_player.png";
 c_str YOU_WON = "You has won";
 c_str PLAYER_SCORE = "Player score";
+c_str CURRENT_LEVEL = "Current level";

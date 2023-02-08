@@ -30,6 +30,7 @@ public:
     [[nodiscard]] const Player* player() const;
 signals:
     void boardChanged();
+    void levelChanged(unsigned id);
 public slots:
     void onKeyPressed(Keys key);
     void onPlayerScoreUpdated();

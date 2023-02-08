@@ -23,11 +23,13 @@ public:
     ~InfoWidget() override;
 public slots:
     void onPlayerScoreChanged();
+    void onLevelChanged(unsigned id);
 private:
     void updateContent();
 
     QVBoxLayout mLayout;
     const GameAlgorithm& mAlgorithm;
+    QLabel mCurrentLevel;
     QLabel mPlayerLabel;
     QVector<QLabel*> mEnemyLabels;
 };

@@ -1,7 +1,5 @@
 
 cmake_minimum_required(VERSION 3.20)
-#set(CMAKE_C_COMPILER "/usr/bin/c")
-#set(CMAKE_CXX_COMPILER "/usr/bin/c++")
 project(DandyBotNative)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -20,6 +18,3 @@ add_executable(${PROJECT_NAME} ${sources})
 
 find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
 target_link_libraries(${PROJECT_NAME} Qt::Core Qt::Gui Qt::Widgets)
-
-find_package(Boost 1.40 COMPONENTS program_options REQUIRED)
-target_link_libraries(${PROJECT_NAME} Boost::program_options)

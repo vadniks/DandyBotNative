@@ -14,8 +14,10 @@
 InfoWidget::InfoWidget(QWidget* parent, const GameAlgorithm& algorithm)
     : QWidget(parent), mLayout(this), mAlgorithm(algorithm)
 {
+    mLayout.addWidget(&mCurrentLevel);
     mLayout.addWidget(&mPlayerLabel);
     updateContent();
+    onLevelChanged(0);
 }
 
 InfoWidget::~InfoWidget() {
@@ -25,6 +27,8 @@ InfoWidget::~InfoWidget() {
 
 void InfoWidget::onPlayerScoreChanged() { updateContent(); }
 
+void InfoWidget::onLevelChanged(unsigned id) { mCurrentLevel.setText(QString::asprintf("%s: %d", CURRENT_LEVEL, id)); }
+
 void InfoWidget::updateContent() {
-    mPlayerLabel.setText(QString::asprintf("%s %d", PLAYER_SCORE, mAlgorithm.player()->totalScore()));
+    mPlayerLabel.setText(QString::asprintf("%s: %d", PLAYER_SCORE, mAlgorithm.player()->totalScore()));
 }
