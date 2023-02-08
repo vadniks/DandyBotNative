@@ -45,6 +45,7 @@ private:
     void initializePlayer();
     void generateCoordsForEnemies();
     void spawnEnemies();
+    static unsigned randUint(unsigned topBound);
 
     GameBoard* mBoard;
     QVector<const GameLevel*> mLevels;

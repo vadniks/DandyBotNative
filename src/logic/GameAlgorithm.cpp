@@ -39,6 +39,7 @@ GameAlgorithm::GameAlgorithm(QObject* parent)
     initializePlayer();
     connect(mPlayer, &Bot::scoreUpdated, this, &GameAlgorithm::onPlayerScoreUpdated);
 
+    srand(time(nullptr)); // NOLINT(cert-msc51-cpp)
     spawnEnemies();
 
     connect(&mTimer, &QTimer::timeout, this, &GameAlgorithm::onTick);
@@ -262,11 +263,12 @@ void GameAlgorithm::generateCoordsForEnemies() {
 void GameAlgorithm::spawnEnemies() {
     mCurrentFreeCoords.clear();
     generateCoordsForEnemies();
-    srand(time(nullptr)); // NOLINT(cert-msc51-cpp)
 
     for (char chr = ENEMY_MIN_OBJ; chr <= ENEMY_MAX_OBJ; chr++) {
-        const auto position = mCurrentFreeCoords[rand() / (RAND_MAX / (mCurrentFreeCoords.size() - 1))]; // NOLINT(cert-msc50-cpp)
+        const auto position = mCurrentFreeCoords[randUint(mCurrentFreeCoords.size() - 1)];
         mEnemies.push_back(new Bot(this, position.first, position.second, chr));
         mBoard->setAt(chr, position.first, position.second);
     }
 }
+
+unsigned GameAlgorithm::randUint(unsigned topBound) { return rand() / (RAND_MAX / topBound); } // NOLINT(cert-msc50-cpp)
