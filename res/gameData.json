@@ -10,13 +10,13 @@
       "map": 1,
       "steps": 67,
       "start": [0, 10],
-      "bots": 5
+      "bots": 2
     },
     {
       "map": 2,
       "steps": 15,
       "start": [1, 23],
-      "bots": 5
+      "bots": 4
     },
     {
       "map": 3,

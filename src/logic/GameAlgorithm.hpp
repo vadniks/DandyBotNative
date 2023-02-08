@@ -35,10 +35,10 @@ signals:
     void levelChanged(unsigned id);
 public slots:
     void onKeyPressed(KeyEvent key);
-    void onPlayerScoreUpdated();
     void onTick();
     void onBotTick();
 private:
+    void checkPlayerScore();
     void processEnemies();
     void processKeyPress(KeyEvent key, Bot* bot);
     void loadGameData() EXCEPT;

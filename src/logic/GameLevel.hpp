@@ -25,7 +25,8 @@ public:
         unsigned steps,
         QVector<char>&& map,
         unsigned rows,
-        unsigned columns
+        unsigned columns,
+        unsigned enemies
     ) :
         QObject(parent),
         id(id),
@@ -33,7 +34,8 @@ public:
         steps(steps),
         map(static_cast<QVector<char>&&>(map)),
         rows(rows),
-        columns(columns)
+        columns(columns),
+        enemies(enemies)
     {};
 
     const unsigned id;
@@ -42,4 +44,5 @@ public:
     const QVector<char> map;
     const unsigned rows;
     const unsigned columns;
+    const unsigned enemies;
 };

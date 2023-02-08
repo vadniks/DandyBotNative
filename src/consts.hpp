@@ -22,6 +22,7 @@ extern c_str LEVELS;
 extern c_str MAP;
 extern c_str START;
 extern c_str STEPS;
+extern c_str BOTS;
 extern c_str MAPS;
 extern const char EMPTY_OBJ;
 extern const char BLOC_OBJ;

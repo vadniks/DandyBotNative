@@ -20,6 +20,7 @@ c_str LEVELS = "levels";
 c_str MAP = "map";
 c_str START = "start";
 c_str STEPS = "steps";
+c_str BOTS = "bots";
 c_str MAPS = "maps";
 const char EMPTY_OBJ = ' ';
 const char BLOC_OBJ = '#';

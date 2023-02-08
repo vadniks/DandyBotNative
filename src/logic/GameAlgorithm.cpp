@@ -37,7 +37,7 @@ GameAlgorithm::GameAlgorithm(QObject* parent)
 
     mPlayer = new Bot(this, 0, 0, PLAYER_OBJ);
     initializePlayer();
-    connect(mPlayer, &Bot::scoreUpdated, this, &GameAlgorithm::onPlayerScoreUpdated);
+//    connect(mPlayer, &Bot::scoreUpdated, this, &GameAlgorithm::checkPlayerScore);
 
     srand(time(nullptr)); // NOLINT(cert-msc51-cpp)
     spawnEnemies();
@@ -69,7 +69,19 @@ const Bot* GameAlgorithm::player() const { return mPlayer; }
 
 void GameAlgorithm::onKeyPressed(KeyEvent key) { mKeyEvents.enqueue(key); }
 
-void GameAlgorithm::onPlayerScoreUpdated() {
+void GameAlgorithm::onTick() {
+    if (!mKeyEvents.isEmpty())
+        processKeyPress(mKeyEvents.dequeue(), mPlayer);
+
+    const auto chance = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); // NOLINT(cert-msc50-cpp)
+    if (chance <= BOT_MOVE_CHANCE) onBotTick();
+
+    checkPlayerScore();
+}
+
+void GameAlgorithm::onBotTick() { processEnemies(); }
+
+void GameAlgorithm::checkPlayerScore() {
     if (mPlayer->currentScore() != currentLevel()->steps) return;
 
     if (mCurrentLevelId == mLevels.size() - 1) {
@@ -90,16 +102,6 @@ void GameAlgorithm::onPlayerScoreUpdated() {
         spawnEnemies();
     }
 }
-
-void GameAlgorithm::onTick() {
-    if (!mKeyEvents.isEmpty())
-        processKeyPress(mKeyEvents.dequeue(), mPlayer);
-
-    const auto chance = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); // NOLINT(cert-msc50-cpp)
-    if (chance <= BOT_MOVE_CHANCE) onBotTick();
-}
-
-void GameAlgorithm::onBotTick() { processEnemies(); }
 
 void GameAlgorithm::processEnemies() {
     for (Bot* enemy : mEnemies) {
@@ -236,6 +238,10 @@ void GameAlgorithm::loadGameData() EXCEPT {
         const unsigned steps = level[STEPS].toInt();
         if (coins < steps) throw Exception("amount of steps must not be greater than amount of coin objects on the map");
 
+        const int bots = level[BOTS].toInt();
+        if (bots < 0 or bots > ENEMY_MAX_OBJ - ENEMY_MIN_OBJ)
+            throw Exception("amount of bots must be (equal to 0 or greater) and less than 6 or equal");
+
         mLevels.push_back(new GameLevel(
             this,
             static_cast<unsigned>(level[MAP].toInt()),
@@ -246,7 +252,8 @@ void GameAlgorithm::loadGameData() EXCEPT {
             static_cast<unsigned>(coins),
             static_cast<QVector<char>&&>(map),
             rows,
-            columns
+            columns,
+            bots
         ));
     }
 
@@ -285,10 +292,15 @@ void GameAlgorithm::generateCoordsForEnemies() {
 }
 
 void GameAlgorithm::spawnEnemies() {
+    for (const Bot* enemy : mEnemies)
+        delete enemy;
+    mEnemies.clear();
+
     mCurrentFreeCoords.clear();
     generateCoordsForEnemies();
+    const auto totalEnemies = static_cast<char>(currentLevel()->enemies);
 
-    for (char chr = ENEMY_MIN_OBJ; chr <= ENEMY_MAX_OBJ; chr++) {
+    for (char chr = ENEMY_MIN_OBJ, enemies = 0; chr <= ENEMY_MAX_OBJ and enemies < totalEnemies; chr++, enemies++) {
         const auto position = mCurrentFreeCoords[randUint(mCurrentFreeCoords.size() - 1)];
         mEnemies.push_back(new Bot(this, position.first, position.second, chr));
         mBoard->setAt(chr, position.first, position.second);
