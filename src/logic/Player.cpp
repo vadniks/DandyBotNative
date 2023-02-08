@@ -9,7 +9,6 @@
  */
 
 #include "Player.hpp"
-#include "../Exception.hpp"
 
 Player::Player(QObject* parent, unsigned row, unsigned column) :
     QObject(parent), row(row), column(column), mCurrentScore(0), mTotalScore(0)
@@ -21,11 +20,11 @@ unsigned Player::totalScore() const { return mTotalScore; }
 
 void Player::setCurrentScore(unsigned currentScore) {
     mCurrentScore = currentScore;
-    mTotalScore += currentScore;
     emit scoreUpdated();
 }
 
-void Player::updateCurrentScore(unsigned delta, bool increment) EXCEPT {
-    if (!increment and delta > mCurrentScore) throw Exception("decrementing delta must be less than current score");
-    setCurrentScore(increment ? mCurrentScore + delta : mCurrentScore - delta);
+void Player::incrementCurrentScore(unsigned delta) {
+    const unsigned score = mCurrentScore + delta;
+    score > mTotalScore ? mTotalScore = score : mTotalScore += delta;
+    setCurrentScore(score);
 }

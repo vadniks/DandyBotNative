@@ -71,7 +71,7 @@ void GameAlgorithm::onKeyPressed(Keys key) {
 
     const auto checkNHandleCoin = [&](){
         if (object >= COIN_MIN_OBJ and object <= COIN_MAX_OBJ)
-            mPlayer->updateCurrentScore(object - COIN_MIN_OBJ + 1, true);
+            mPlayer->incrementCurrentScore(object - COIN_MIN_OBJ + 1);
     };
 
     switch (key) {

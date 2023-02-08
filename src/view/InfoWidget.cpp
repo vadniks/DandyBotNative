@@ -9,11 +9,12 @@
  */
 
 #include "InfoWidget.hpp"
+#include "../consts.hpp"
 
-InfoWidget::InfoWidget(QWidget* parent, const GameAlgorithm& algorithm) : QWidget(parent), mLayout(this), mAlgorithm(algorithm) {
-//    setSizePolicy(QSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed));
-//    mLayout.setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
-    mLayout.addWidget(new QLabel("vgfrvgfrgv"));
+InfoWidget::InfoWidget(QWidget* parent, const GameAlgorithm& algorithm)
+    : QWidget(parent), mLayout(this), mAlgorithm(algorithm)
+{
+    mLayout.addWidget(&mPlayerLabel);
     updateContent();
 }
 
@@ -22,6 +23,8 @@ InfoWidget::~InfoWidget() {
         delete label;
 }
 
+void InfoWidget::onPlayerScoreChanged() { updateContent(); }
+
 void InfoWidget::updateContent() {
-    mPlayerLabel.setText(QString::asprintf("%d", mAlgorithm.player()->totalScore()));
+    mPlayerLabel.setText(QString::asprintf("%s %d", PLAYER_SCORE, mAlgorithm.player()->totalScore()));
 }

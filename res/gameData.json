@@ -2,8 +2,8 @@
   "levels": [
     {
       "map": 0,
-      "start": [0, 4],
-      "steps": 10
+      "steps": 10,
+      "start": [0, 4]
     },
     {
       "map": 1,

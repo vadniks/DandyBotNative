@@ -10,7 +10,6 @@ class MainWidget : public QWidget {
     Q_OBJECT
 public:
     explicit MainWidget(QWidget* parent);
-    [[nodiscard]] QSize sizeHint() const override;
 public slots:
     void onBoardSizeChanged(unsigned width, unsigned height);
 signals:

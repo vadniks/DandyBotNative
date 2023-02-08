@@ -21,6 +21,8 @@ class InfoWidget : public QWidget {
 public:
     explicit InfoWidget(QWidget* parent, const GameAlgorithm& algorithm);
     ~InfoWidget() override;
+public slots:
+    void onPlayerScoreChanged();
 private:
     void updateContent();
 
