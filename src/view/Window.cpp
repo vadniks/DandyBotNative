@@ -18,7 +18,7 @@ Window::Window() {
     connect(dynamic_cast<LaunchWidget*>(currentWidget), &LaunchWidget::onStartClicked, this, &Window::onGameLaunched);
     setCentralWidget(currentWidget);
 
-//    setFixedSize(static_cast<signed>(APP_WIDTH / 3), static_cast<signed>(APP_HEIGHT / 3));
+    setFixedSize(static_cast<signed>(APP_WIDTH / 3), static_cast<signed>(APP_HEIGHT / 3));
     setWindowTitle(APP_NAME);
     setWindowIcon(QIcon(APP_ICON));
     show();
@@ -31,8 +31,8 @@ void Window::onGameLaunched() {
     currentWidget = new MainWidget(this);
     connect(dynamic_cast<MainWidget*>(currentWidget), &MainWidget::sizeChanged, this, &Window::onSizeChanged);
     setCentralWidget(currentWidget);
-//    setFixedSize(currentWidget->sizeHint());
+    setFixedSize(currentWidget->sizeHint());
 }
 
 void Window::onSizeChanged(unsigned int width, unsigned int height)
-{ /*setFixedSize(static_cast<signed>(width), static_cast<signed>(height));*/ }
+{ setFixedSize(static_cast<signed>(width), static_cast<signed>(height)); }

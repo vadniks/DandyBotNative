@@ -10,10 +10,10 @@
 
 #include "InfoWidget.hpp"
 
-InfoWidget::InfoWidget(QWidget* parent, const GameAlgorithm& algorithm) : QWidget(parent), mAlgorithm(algorithm) {
-    setSizePolicy(QSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed));
-    mLayout.setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
-    mLayout.addWidget(&mPlayerLabel);
+InfoWidget::InfoWidget(QWidget* parent, const GameAlgorithm& algorithm) : QWidget(parent), mLayout(this), mAlgorithm(algorithm) {
+//    setSizePolicy(QSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed));
+//    mLayout.setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
+    mLayout.addWidget(new QLabel("vgfrvgfrgv"));
     updateContent();
 }
 
