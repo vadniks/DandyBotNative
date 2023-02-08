@@ -13,7 +13,6 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QLabel>
-#include <QVector>
 #include "../logic/GameAlgorithm.hpp"
 
 class InfoWidget : public QWidget {
