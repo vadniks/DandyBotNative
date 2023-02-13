@@ -56,7 +56,7 @@ void BoardWidget::setBoard(GameBoard* board) {
 QSize BoardWidget::sizeHint() const {
     return mBoard != nullptr ? QSize(
         static_cast<signed>(mBoard->columns() * GAME_OBJECT_SIZE),
-        static_cast<signed>(mBoard->rows() * GAME_OBJECT_SIZE)
+        static_cast<signed>((mBoard->rows() + 2) * GAME_OBJECT_SIZE)
     ) : QSize(0, 0);
 }
 
@@ -81,9 +81,29 @@ void BoardWidget::paintEvent(QPaintEvent*) {
     painter.restore();
 
     painter.save();
-    for (unsigned row = 0; row < mBoard->rows(); row++)
-        for (unsigned column = 0; column < mBoard->columns(); column++)
+    const auto rows = mBoard->rows(), columns= mBoard->columns();
+    for (unsigned row = 0; row < rows; row++)
+        for (unsigned column = 0; column < columns; column++)
             iconOf(mBoard->objectAt(row, column)).paint(&painter, objectRect(row, column), Qt::AlignCenter);
+    painter.restore();
+
+    painter.save();
+    const auto icons = mAlgorithm.objectDescriptions();
+    const auto offset = static_cast<signed>(GAME_OBJECT_SIZE);
+    for (char chr = ENEMY_MIN_OBJ, i = 0; chr < ENEMY_MAX_OBJ; chr++, i++) {
+        if (static_cast<unsigned>(i) > columns) break;
+
+        const auto rect = objectRect(rows, i).adjusted(0, 2, 0, 2);
+        icons[chr].paint(&painter, rect);
+
+        painter.drawText(rect.adjusted(offset / 2, offset, 0, offset), QString(chr));
+    }
+    painter.restore();
+
+    painter.save();
+    painter.setBrush(QColor::fromRgb(255, 255, 255));
+    const auto offset2 = static_cast<signed>(rows * offset - 1);
+    painter.drawLine(0, offset2, static_cast<signed>(columns) * offset - 1, offset2);
     painter.restore();
 }
 
