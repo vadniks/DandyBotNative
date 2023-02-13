@@ -1,3 +1,4 @@
+# Compiled with Clang on Linux x86_64
 
 cmake_minimum_required(VERSION 3.20)
 project(DandyBotNative)
