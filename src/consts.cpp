@@ -43,3 +43,5 @@ unsigned TICK_INTERVAL = 25;
 float BOT_MOVE_CHANCE = 0.05;
 float BOT_COIN_TAKE_CHANCE = 0.25;
 float PLAYER_SCORE_TO_WIN_MULTIPLIER = 0.85;
+c_str ENEMY = "Enemy";
+c_str SCORE = "score";

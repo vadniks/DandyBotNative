@@ -19,14 +19,18 @@ class InfoWidget : public QWidget {
     Q_OBJECT
 public:
     explicit InfoWidget(QWidget* parent, const GameAlgorithm& algorithm);
+    ~InfoWidget() override;
 public slots:
     void onPlayerScoreChanged();
     void onLevelChanged(unsigned id);
+    void onEnemiesSpawned();
+    void onEnemyScoreChanged(char objectId, unsigned score);
 private:
-    void updateContent();
+    static QString makeEnemyText(char objectId, unsigned score);
 
     QVBoxLayout mLayout;
     const GameAlgorithm& mAlgorithm;
     QLabel mCurrentLevel;
     QLabel mPlayerLabel;
+    QMap<char, QLabel*> mEnemies;
 };

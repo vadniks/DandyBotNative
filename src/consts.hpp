@@ -45,3 +45,5 @@ extern unsigned TICK_INTERVAL;
 extern float BOT_MOVE_CHANCE;
 extern float BOT_COIN_TAKE_CHANCE;
 extern float PLAYER_SCORE_TO_WIN_MULTIPLIER;
+extern c_str ENEMY;
+extern c_str SCORE;

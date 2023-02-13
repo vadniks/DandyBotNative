@@ -69,6 +69,8 @@ const QMap<char, QIcon>& GameAlgorithm::objectDescriptions() { return mObjectDes
 
 const Bot* GameAlgorithm::player() const { return mPlayer; }
 
+const QVector<Bot*>& GameAlgorithm::enemies() const { return mEnemies; }
+
 void GameAlgorithm::onKeyPressed(KeyEvent key) { mKeyEvents.enqueue(key); }
 
 void GameAlgorithm::onTick() {
@@ -325,9 +327,12 @@ void GameAlgorithm::spawnEnemies() {
 
         usedPositions.push_back(position);
 
-        mEnemies.push_back(new Bot(this, position.first, position.second, chr));
+        auto bot = new Bot(this, position.first, position.second, chr);
+        connect(bot, &Bot::scoreUpdated, this, [this, bot](){ emit enemyScoreChanged(bot->objectId, bot->totalScore()); });
+        mEnemies.push_back(bot);
         mBoard->setAt(chr, position.first, position.second);
     }
+    emit enemiesSpawned();
 }
 
 unsigned GameAlgorithm::randUint(unsigned topBound) { return rand() / (RAND_MAX / topBound); }

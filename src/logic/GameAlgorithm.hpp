@@ -30,9 +30,12 @@ public:
     void setBoard(GameBoard* board);
     const QMap<char, QIcon>& objectDescriptions();
     [[nodiscard]] const Bot* player() const;
+    [[nodiscard]] const QVector<Bot*>& enemies() const;
 signals:
     void boardChanged();
     void levelChanged(unsigned id);
+    void enemyScoreChanged(char objectId, unsigned score);
+    void enemiesSpawned();
 public slots:
     void onKeyPressed(KeyEvent key);
     void onTick();

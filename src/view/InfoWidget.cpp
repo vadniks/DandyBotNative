@@ -8,6 +8,7 @@
  * TODO: add licence
  */
 
+#include <cassert>
 #include "InfoWidget.hpp"
 #include "../consts.hpp"
 
@@ -16,15 +17,39 @@ InfoWidget::InfoWidget(QWidget* parent, const GameAlgorithm& algorithm)
 {
     mLayout.addWidget(&mCurrentLevel);
     mLayout.addWidget(&mPlayerLabel);
-    updateContent();
+    onPlayerScoreChanged();
     onLevelChanged(0);
+    onEnemiesSpawned();
 }
 
-void InfoWidget::onPlayerScoreChanged() { updateContent(); }
+InfoWidget::~InfoWidget() {
+    for (QLabel* label : mEnemies)
+        delete label;
+}
+
+void InfoWidget::onPlayerScoreChanged()
+{ mPlayerLabel.setText(QString::asprintf("%s: %d", PLAYER_SCORE, mAlgorithm.player()->totalScore())); }
 
 void InfoWidget::onLevelChanged(unsigned id)
 { mCurrentLevel.setText(QString::asprintf("%s: %d", CURRENT_LEVEL, id)); }
 
-void InfoWidget::updateContent() { mPlayerLabel.setText(
-    QString::asprintf("%s: %d", PLAYER_SCORE, mAlgorithm.player()->totalScore())
-); }
+void InfoWidget::onEnemiesSpawned() {
+    for (QLabel* label : mEnemies)
+        delete label;
+    mEnemies.clear();
+
+    for (const Bot* enemy : mAlgorithm.enemies()) {
+        auto label = new QLabel(makeEnemyText(enemy->objectId, 0));
+        mEnemies[enemy->objectId] = label;
+        mLayout.addWidget(label);
+    }
+}
+
+void InfoWidget::onEnemyScoreChanged(char objectId, unsigned score) {
+    auto label = mEnemies.value(objectId, nullptr);
+    assert(label != nullptr);
+    label->setText(makeEnemyText(objectId, score));
+}
+
+QString InfoWidget::makeEnemyText(char objectId, unsigned score)
+{ return QString::asprintf("%s %c's %s: %u", ENEMY, objectId, SCORE, score); }
