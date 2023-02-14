@@ -71,4 +71,4 @@ void InfoWidget::onEnemyScoreChanged(char objectId, unsigned score) {
 }
 
 QString InfoWidget::makeEnemyText(char objectId, unsigned score)
-{ return QString::asprintf("%s %c's %s: %u", ENEMY, objectId, SCORE, score); }
+{ return QString::asprintf("%s %c %s: %u", ENEMY, objectId, SCORE, score); }
