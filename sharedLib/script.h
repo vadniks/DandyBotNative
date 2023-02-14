@@ -60,6 +60,6 @@
  * @param rows - amount of rows in the current level
  * @param columns - amount of columns in the current level
  *
- * @return one of UP, LEFT, DOWN, RIGHT, PASS
+ * @return action to be executed with the player character - one of UP, LEFT, DOWN, RIGHT, PASS
  */
 char script(unsigned row, unsigned column, unsigned level, char* objectIds, unsigned rows, unsigned columns);
