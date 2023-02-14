@@ -91,7 +91,7 @@ void BoardWidget::paintEvent(QPaintEvent*) {
     const auto icons = mAlgorithm.objectDescriptions();
     const auto offset = static_cast<signed>(GAME_OBJECT_SIZE);
     for (char chr = ENEMY_MIN_OBJ, i = 0; chr < ENEMY_MAX_OBJ; chr++, i++) {
-        if (static_cast<unsigned>(i) > columns) break;
+        if (static_cast<unsigned>(i) >= columns) break;
 
         const auto rect = objectRect(rows, i).adjusted(0, 2, 0, 2);
         icons[chr].paint(&painter, rect);

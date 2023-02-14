@@ -57,8 +57,8 @@ public:
         enemies(enemies)
     {};
 
-    const unsigned id;
-    const Position start;
+    [[maybe_unused]] const unsigned id;
+    const Position start; // column (x), row (y)
     const unsigned steps;
     const QVector<char> map;
     const unsigned rows;

@@ -322,7 +322,7 @@ void GameAlgorithm::generateCoordsForEnemies() {
             const char object = mBoard->objectAt(row, column);
 
             if (object != BLOC_OBJ and (object < COIN_MIN_OBJ or object > COIN_MAX_OBJ)
-                and row != startPos.first and column != startPos.second)
+                and row != startPos.second and column != startPos.first)
                 mCurrentFreeCoords.push_back({ row, column });
         }
 }

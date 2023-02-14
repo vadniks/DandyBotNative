@@ -47,7 +47,7 @@ public:
     const char objectId;
 signals:
     void scoreUpdated();
-protected:
+private:
     unsigned mCurrentScore;
     unsigned mTotalScore;
 };
