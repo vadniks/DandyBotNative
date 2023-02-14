@@ -46,9 +46,10 @@
 
 GameAlgorithm::GameAlgorithm(QObject* parent) :
     QObject(parent), mBoard(nullptr), mPlayer(nullptr), mCurrentLevelId(0),
-    mHasWon(false), mTimer(this), mScriptHandle(nullptr), mScript(nullptr)
+    mHasWon(false), mTimer(this), mScriptHandle(nullptr), mScript(nullptr), mCurrentObjectsNearPlayer()
 {
     loadScriptLib();
+    mCurrentObjectsNearPlayer.fill(EMPTY_OBJ);
 
     mObjectDescriptions[EMPTY_OBJ] = QIcon(EMPTY_ICON);
     mObjectDescriptions[BLOC_OBJ] = QIcon(BLOC_ICON);
@@ -100,7 +101,8 @@ void GameAlgorithm::onKeyPressed(KeyEvent key) { mKeyEvents.enqueue(key); }
 void GameAlgorithm::onTick() {
     if (!mKeyEvents.isEmpty())
         processKeyPress(mKeyEvents.dequeue(), mPlayer);
-    processKeyPress(static_cast<KeyEvent>(mScript(0, 0, 0, nullptr)), mPlayer);
+
+    processPlayerScript();
 
     const auto chance = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
     if (chance <= BOT_MOVE_CHANCE) onBotTick();
@@ -109,6 +111,22 @@ void GameAlgorithm::onTick() {
 }
 
 void GameAlgorithm::onBotTick() { processEnemies(); }
+
+void GameAlgorithm::processPlayerScript() {
+    const auto row = mPlayer->currentRow,
+        column = mPlayer->currentColumn,
+        rows = mBoard->rows(),
+        columns = mBoard->columns();
+
+    mCurrentObjectsNearPlayer[0] = row - 1 > rows ? static_cast<char>(NUM_UNDEF) : mBoard->objectAt(row - 1, column);
+    mCurrentObjectsNearPlayer[1] = column - 1 > columns ? static_cast<char>(NUM_UNDEF) : mBoard->objectAt(row, column - 1);
+    mCurrentObjectsNearPlayer[2] = row + 1 > rows ? static_cast<char>(NUM_UNDEF) : mBoard->objectAt(row + 1, column);
+    mCurrentObjectsNearPlayer[3] = column + 1 > columns ? static_cast<char>(NUM_UNDEF) : mBoard->objectAt(row, column + 1);
+
+    const auto action = mScript(row, column, mCurrentLevelId, mCurrentObjectsNearPlayer.data());
+    if (action != NUM_UNDEF)
+        processKeyPress(static_cast<KeyEvent>(action), mPlayer);
+}
 
 void GameAlgorithm::checkPlayerScore() {
     if (mPlayer->currentScore() <
@@ -362,7 +380,7 @@ void GameAlgorithm::spawnEnemies() {
 
 unsigned GameAlgorithm::randUint(unsigned topBound) { return rand() / (RAND_MAX / topBound); }
 
-void GameAlgorithm::loadScriptLib() {
+void GameAlgorithm::loadScriptLib() EXCEPT {
     mScriptHandle = dlopen(SCRIPT_LIB_PATH, RTLD_NOW);
     if (!mScriptHandle)
         throw Exception("unable to load script library");

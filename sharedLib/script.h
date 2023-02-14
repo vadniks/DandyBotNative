@@ -29,6 +29,8 @@
 
 #pragma once
 
+/** object ids */
+#define NOTHING -1
 #define EMPTY ' '
 #define BLOCK '#'
 #define COIN_MIN '1'
@@ -37,6 +39,7 @@
 #define ENEMY_MAX 'f'
 #define PLAYER '!'
 
+/** action ids */
 #define UP 87
 #define LEFT 65
 #define DOWN 83

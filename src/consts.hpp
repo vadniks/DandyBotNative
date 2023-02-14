@@ -68,3 +68,4 @@ extern c_str ENEMY;
 extern c_str SCORE;
 extern c_str SCRIPT_LIB_PATH;
 extern c_str SCRIPT_FUN_NAME;
+extern int NUM_UNDEF;
