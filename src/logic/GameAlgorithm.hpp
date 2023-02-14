@@ -61,7 +61,10 @@ public slots:
     void onTick();
     void onBotTick();
 private:
-    using script = char (*)(unsigned row, unsigned column, unsigned level, char* objectIds);
+    using script = char (*)(
+        unsigned row, unsigned column, unsigned level,
+        char* objectIds, unsigned rows, unsigned columns
+    );
 
     void processPlayerScript();
     void checkPlayerScore();

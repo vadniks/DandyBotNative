@@ -118,12 +118,12 @@ void GameAlgorithm::processPlayerScript() {
         rows = mBoard->rows(),
         columns = mBoard->columns();
 
-    mCurrentObjectsNearPlayer[0] = row - 1 > rows ? static_cast<char>(NUM_UNDEF) : mBoard->objectAt(row - 1, column);
-    mCurrentObjectsNearPlayer[1] = column - 1 > columns ? static_cast<char>(NUM_UNDEF) : mBoard->objectAt(row, column - 1);
-    mCurrentObjectsNearPlayer[2] = row + 1 > rows ? static_cast<char>(NUM_UNDEF) : mBoard->objectAt(row + 1, column);
-    mCurrentObjectsNearPlayer[3] = column + 1 > columns ? static_cast<char>(NUM_UNDEF) : mBoard->objectAt(row, column + 1);
+    mCurrentObjectsNearPlayer[0] = row - 1 >= rows ? static_cast<char>(NUM_UNDEF) : mBoard->objectAt(row - 1, column);
+    mCurrentObjectsNearPlayer[1] = column - 1 >= columns ? static_cast<char>(NUM_UNDEF) : mBoard->objectAt(row, column - 1);
+    mCurrentObjectsNearPlayer[2] = row + 1 >= rows ? static_cast<char>(NUM_UNDEF) : mBoard->objectAt(row + 1, column);
+    mCurrentObjectsNearPlayer[3] = column + 1 >= columns ? static_cast<char>(NUM_UNDEF) : mBoard->objectAt(row, column + 1);
 
-    const auto action = mScript(row, column, mCurrentLevelId, mCurrentObjectsNearPlayer.data());
+    const auto action = mScript(row, column, mCurrentLevelId, mCurrentObjectsNearPlayer.data(), rows, columns);
     if (action != NUM_UNDEF)
         processKeyPress(static_cast<KeyEvent>(action), mPlayer);
 }
