@@ -60,6 +60,8 @@ public slots:
     void onTick();
     void onBotTick();
 private:
+    using script = char (*)(unsigned row, unsigned column, unsigned level, char* objectIds);
+
     void checkPlayerScore();
     void processEnemies();
     void processKeyPress(KeyEvent key, Bot* bot);
@@ -70,6 +72,7 @@ private:
     void generateCoordsForEnemies();
     void spawnEnemies();
     static unsigned randUint(unsigned topBound);
+    void loadScriptLib() EXCEPT;
 
     GameBoard* mBoard;
     QVector<const GameLevel*> mLevels;
@@ -81,4 +84,6 @@ private:
     QVector<Bot*> mEnemies;
     QVector<QPair<unsigned, unsigned>> mCurrentFreeCoords;
     QQueue<KeyEvent> mKeyEvents;
+    void* mScriptHandle;
+    script mScript;
 };

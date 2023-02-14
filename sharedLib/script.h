@@ -29,42 +29,32 @@
 
 #pragma once
 
-#include "util.hpp"
+#define EMPTY ' '
+#define BLOCK '#'
+#define COIN_MIN '1'
+#define COIN_MAX '9'
+#define ENEMY_MIN 'a'
+#define ENEMY_MAX 'f'
+#define PLAYER '!'
 
-extern unsigned APP_WIDTH;
-extern unsigned APP_HEIGHT;
-extern c_str APP_ICON;
-extern c_str APP_NAME;
-extern c_str START_GAME;
-extern c_str GAME_DATA;
-extern c_str LEVELS;
-extern c_str MAP;
-extern c_str START;
-extern c_str STEPS;
-extern c_str BOTS;
-extern c_str MAPS;
-extern const char EMPTY_OBJ;
-extern const char BLOC_OBJ;
-extern const char COIN_MIN_OBJ;
-extern const char COIN_MAX_OBJ;
-extern const char ENEMY_MIN_OBJ;
-extern const char ENEMY_MAX_OBJ;
-extern const char PLAYER_OBJ;
-extern unsigned GAME_OBJECT_SIZE;
-extern c_str EMPTY_ICON;
-extern c_str BLOC_ICON;
-extern c_str COIN_ICON;
-extern c_str ENEMY_ICON_PREFIX;
-extern c_str ICON_SUFFIX;
-extern c_str PLAYER_ICON;
-extern c_str YOU_WON;
-extern c_str PLAYER_SCORE;
-extern c_str CURRENT_LEVEL;
-extern unsigned TICK_INTERVAL;
-extern float BOT_MOVE_CHANCE;
-extern float BOT_COIN_TAKE_CHANCE;
-extern float PLAYER_SCORE_TO_WIN_MULTIPLIER;
-extern c_str ENEMY;
-extern c_str SCORE;
-extern c_str SCRIPT_LIB_PATH;
-extern c_str SCRIPT_FUN_NAME;
+#define UP 87
+#define LEFT 65
+#define DOWN 83
+#define RIGHT 68
+#define PASS -1
+
+/**
+ * Returns an action to be performed by the player bot at the current bot tick.
+ * This function is called on every bot tick event.
+ *
+ * Coin objects are taken automatically when bot enters theirs coordinates.
+ *
+ * @param row - the y coordinate starting from left top
+ * @param column - the x coordinate starting from left top
+ * @param level - current level id starting from 0
+ * @param objectIds - an array containing 4 object ids for all directions at the current tick,
+ *        contains: {up, left, down, right}, array is deallocated automatically
+ *
+ * @return one of UP, LEFT, DOWN, RIGHT, PASS
+ */
+char script(unsigned row, unsigned column, unsigned level, char* objectIds);

@@ -39,13 +39,17 @@
 #include <QApplication>
 #include <ctime>
 #include <cstdlib>
+#include <dlfcn.h>
 #include "GameAlgorithm.hpp"
 #include "../Exception.hpp"
 #include "../consts.hpp"
 
-GameAlgorithm::GameAlgorithm(QObject* parent)
-    : QObject(parent), mBoard(nullptr), mPlayer(nullptr), mCurrentLevelId(0), mHasWon(false), mTimer(this)
+GameAlgorithm::GameAlgorithm(QObject* parent) :
+    QObject(parent), mBoard(nullptr), mPlayer(nullptr), mCurrentLevelId(0),
+    mHasWon(false), mTimer(this), mScriptHandle(nullptr), mScript(nullptr)
 {
+    loadScriptLib();
+
     mObjectDescriptions[EMPTY_OBJ] = QIcon(EMPTY_ICON);
     mObjectDescriptions[BLOC_OBJ] = QIcon(BLOC_ICON);
     for (char i = COIN_MIN_OBJ; i <= COIN_MAX_OBJ; i++)
@@ -74,6 +78,7 @@ GameAlgorithm::~GameAlgorithm() {
     for (const GameLevel* item : mLevels) delete item;
     delete mPlayer;
     for (const Bot* item : mEnemies) delete item;
+    dlclose(mScriptHandle);
 }
 
 GameBoard* GameAlgorithm::board() const { return mBoard; }
@@ -95,6 +100,7 @@ void GameAlgorithm::onKeyPressed(KeyEvent key) { mKeyEvents.enqueue(key); }
 void GameAlgorithm::onTick() {
     if (!mKeyEvents.isEmpty())
         processKeyPress(mKeyEvents.dequeue(), mPlayer);
+    processKeyPress(static_cast<KeyEvent>(mScript(0, 0, 0, nullptr)), mPlayer);
 
     const auto chance = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
     if (chance <= BOT_MOVE_CHANCE) onBotTick();
@@ -355,3 +361,10 @@ void GameAlgorithm::spawnEnemies() {
 }
 
 unsigned GameAlgorithm::randUint(unsigned topBound) { return rand() / (RAND_MAX / topBound); }
+
+void GameAlgorithm::loadScriptLib() {
+    mScriptHandle = dlopen(SCRIPT_LIB_PATH, RTLD_NOW);
+    if (!mScriptHandle)
+        throw Exception("unable to load script library");
+    mScript = reinterpret_cast<script>(dlsym(mScriptHandle, SCRIPT_FUN_NAME));
+}
