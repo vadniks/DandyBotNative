@@ -34,7 +34,6 @@
 #include <QMap>
 #include <QTimer>
 #include <QQueue>
-#include <array>
 #include "GameBoard.hpp"
 #include "GameLevel.hpp"
 #include "../util.hpp"
@@ -63,7 +62,7 @@ public slots:
 private:
     using script = char (*)(
         unsigned row, unsigned column, unsigned level,
-        char* objectIds, unsigned rows, unsigned columns
+        unsigned rows, unsigned columns, const char* objects
     );
 
     void processPlayerScript();
@@ -91,5 +90,4 @@ private:
     QQueue<KeyEvent> mKeyEvents;
     void* mScriptHandle;
     script mScript;
-    std::array<char, 4> mCurrentObjectsNearPlayer;
 };

@@ -55,11 +55,10 @@
  * @param row - the y coordinate starting from left top
  * @param column - the x coordinate starting from left top
  * @param level - current level id starting from 0
- * @param objectIds - an array containing 4 object ids for all directions at the current tick,
- *        contains: {up, left, down, right}, array is deallocated automatically
  * @param rows - amount of rows in the current level
  * @param columns - amount of columns in the current level
+ * @param objects - array of objects which are presented in map at the current tick
  *
  * @return action to be executed with the player character - one of UP, LEFT, DOWN, RIGHT, PASS
  */
-char script(unsigned row, unsigned column, unsigned level, char* objectIds, unsigned rows, unsigned columns);
+char script(unsigned row, unsigned column, unsigned level, unsigned rows, unsigned columns, char* objects);

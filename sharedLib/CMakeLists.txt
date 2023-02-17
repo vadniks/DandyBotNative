@@ -1,5 +1,5 @@
 
-# To compile & build, run these commands within the cmake-build-debug directory:
+# To compile & build, run these commands within the current directory:
 # mkdir cmake-build-debug
 # cmake .. && make all
 

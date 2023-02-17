@@ -46,10 +46,9 @@
 
 GameAlgorithm::GameAlgorithm(QObject* parent) :
     QObject(parent), mBoard(nullptr), mPlayer(nullptr), mCurrentLevelId(0),
-    mHasWon(false), mTimer(this), mScriptHandle(nullptr), mScript(nullptr), mCurrentObjectsNearPlayer()
+    mHasWon(false), mTimer(this), mScriptHandle(nullptr), mScript(nullptr)
 {
     loadScriptLib();
-    mCurrentObjectsNearPlayer.fill(EMPTY_OBJ);
 
     mObjectDescriptions[EMPTY_OBJ] = QIcon(EMPTY_ICON);
     mObjectDescriptions[BLOC_OBJ] = QIcon(BLOC_ICON);
@@ -118,12 +117,7 @@ void GameAlgorithm::processPlayerScript() {
         rows = mBoard->rows(),
         columns = mBoard->columns();
 
-    mCurrentObjectsNearPlayer[0] = row - 1 >= rows ? static_cast<char>(NUM_UNDEF) : mBoard->objectAt(row - 1, column);
-    mCurrentObjectsNearPlayer[1] = column - 1 >= columns ? static_cast<char>(NUM_UNDEF) : mBoard->objectAt(row, column - 1);
-    mCurrentObjectsNearPlayer[2] = row + 1 >= rows ? static_cast<char>(NUM_UNDEF) : mBoard->objectAt(row + 1, column);
-    mCurrentObjectsNearPlayer[3] = column + 1 >= columns ? static_cast<char>(NUM_UNDEF) : mBoard->objectAt(row, column + 1);
-
-    const auto action = mScript(row, column, mCurrentLevelId, mCurrentObjectsNearPlayer.data(), rows, columns);
+    const auto action = mScript(row, column, mCurrentLevelId, rows, columns, mBoard->objects().data());
     if (action != NUM_UNDEF)
         processKeyPress(static_cast<KeyEvent>(action), mPlayer);
 }
@@ -381,7 +375,7 @@ void GameAlgorithm::spawnEnemies() {
 unsigned GameAlgorithm::randUint(unsigned topBound) { return rand() / (RAND_MAX / topBound); }
 
 void GameAlgorithm::loadScriptLib() EXCEPT {
-    mScriptHandle = dlopen(SCRIPT_LIB_PATH, RTLD_NOW);
+    mScriptHandle = dlopen(SCRIPT_LIB_NAME, RTLD_NOW);
     if (!mScriptHandle)
         throw Exception("unable to load script library");
     mScript = reinterpret_cast<script>(dlsym(mScriptHandle, SCRIPT_FUN_NAME));

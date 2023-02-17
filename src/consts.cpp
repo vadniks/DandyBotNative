@@ -64,6 +64,6 @@ float BOT_COIN_TAKE_CHANCE = 0.25;
 float PLAYER_SCORE_TO_WIN_MULTIPLIER = 0.85;
 c_str ENEMY = "Enemy";
 c_str SCORE = "score";
-c_str SCRIPT_LIB_PATH = "../sharedLib/cmake-build-debug/libscript.so";
+c_str SCRIPT_LIB_NAME = "./libscript.so";
 c_str SCRIPT_FUN_NAME = "script";
 int NUM_UNDEF = -1;

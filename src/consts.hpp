@@ -66,6 +66,6 @@ extern float BOT_COIN_TAKE_CHANCE;
 extern float PLAYER_SCORE_TO_WIN_MULTIPLIER;
 extern c_str ENEMY;
 extern c_str SCORE;
-extern c_str SCRIPT_LIB_PATH;
+extern c_str SCRIPT_LIB_NAME;
 extern c_str SCRIPT_FUN_NAME;
 extern int NUM_UNDEF;
