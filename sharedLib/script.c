@@ -43,13 +43,13 @@ char script(unsigned row, unsigned column, unsigned level,
 
     char right = column + 1 < columns ? objects[coordsToIndex(row, columns, column + 1)] : NOTHING;
     if (!hasCollectedCoin && right == EMPTY) return RIGHT;
-    if (right >= COIN_MIN && right <= COIN_MIN) {
+    if (isCoin(right)) {
         hasCollectedCoin = 1;
         return RIGHT;
     }
 
     char down = row + 1 < rows ? objects[coordsToIndex((row + 1), columns, column)] : NOTHING;
-    if (down == EMPTY || (down >= COIN_MIN && down <= COIN_MIN)) return DOWN;
+    if (down == EMPTY || isCoin(down)) return DOWN;
 
     return PASS;
 }

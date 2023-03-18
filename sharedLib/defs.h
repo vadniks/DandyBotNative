@@ -20,3 +20,9 @@ extern char PASS;
 
 /** Converts row and column coordinates to index of an object */
 unsigned coordsToIndex(unsigned row, unsigned columns, unsigned column);
+
+/** Checks whether the given object is a coin */
+int isCoin(char object);
+
+/** Checks whether the given object is an enemy */
+int isEnemy(char object);

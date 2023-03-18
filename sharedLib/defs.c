@@ -16,6 +16,8 @@ char DOWN = 83;
 char RIGHT = 68;
 char PASS = -1;
 
-inline unsigned
-coordsToIndex(unsigned row, unsigned columns, unsigned column)
+unsigned coordsToIndex(unsigned row, unsigned columns, unsigned column)
 { return row * columns + column; }
+
+int isCoin(char object) { return object >= COIN_MIN && object <= COIN_MIN; }
+int isEnemy(char object) { return object >= ENEMY_MIN && object <= ENEMY_MIN; }
