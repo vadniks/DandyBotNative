@@ -1,14 +1,4 @@
 /*
- * Inspired by the Peter Sovietov's DandyBot
- * (https://github.com/true-grue/DandyBot) which was written in 2021-2022.
- *
- * Ported to the QT framework by Vad Nik
- * (https://github.com/vadniks/DandyBotNative) in 2023 for educational purpose.
- */
-
-/*
- * GNU GPL v2
- *
  * Copyright (c) 2021 Peter Sovietov (https://github.com/true-grue)
  *
  * Copyright (C) 2023 Vad Nik (https://github.com/vadniks)
@@ -26,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; If not, see <http://www.gnu.org/licenses/>.
  */
+
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
 
 #pragma ide diagnostic ignored "cert-msc51-cpp"
 #pragma ide diagnostic ignored "cert-msc50-cpp"
@@ -100,8 +92,8 @@ void GameAlgorithm::onKeyPressed(KeyEvent key) { mKeyEvents.enqueue(key); }
 void GameAlgorithm::onTick() {
     if (!mKeyEvents.isEmpty())
         processKeyPress(mKeyEvents.dequeue(), mPlayer);
-
-    processPlayerScript();
+    else
+        processPlayerScript();
 
     const auto chance = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
     if (chance <= BOT_MOVE_CHANCE) onBotTick();
@@ -154,6 +146,7 @@ void GameAlgorithm::processEnemies() {
             case 1: key = KeyEvent::A; break;
             case 2: key = KeyEvent::S; break;
             case 3: key = KeyEvent::D; break;
+            default: key = KeyEvent::W; break;
         }
         processKeyPress(key, enemy);
     }
@@ -375,7 +368,7 @@ void GameAlgorithm::spawnEnemies() {
 unsigned GameAlgorithm::randUint(unsigned topBound) { return rand() / (RAND_MAX / topBound); }
 
 void GameAlgorithm::loadScriptLib() EXCEPT {
-    mScriptHandle = dlopen(SCRIPT_LIB_NAME, RTLD_NOW);
+    mScriptHandle = dlopen(SCRIPT_LIB_NAME, RTLD_LAZY);
     if (!mScriptHandle)
         throw Exception("unable to load script library");
     mScript = reinterpret_cast<script>(dlsym(mScriptHandle, SCRIPT_FUN_NAME));

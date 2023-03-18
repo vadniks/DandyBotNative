@@ -1,16 +1,4 @@
 /*
- * Inspired by the Peter Sovietov's DandyBot
- * (https://github.com/true-grue/DandyBot) which was written in 2021-2022.
- *
- * Ported to the QT framework by Vad Nik
- * (https://github.com/vadniks/DandyBotNative) in 2023 for educational purpose.
- */
-
-/*
- * GNU GPL v2
- *
- * Copyright (c) 2021 Peter Sovietov (https://github.com/true-grue)
- *
  * Copyright (C) 2023 Vad Nik (https://github.com/vadniks)
  *
  * This program is free software; you can redistribute it and/or
@@ -29,22 +17,7 @@
 
 #pragma once
 
-/** object ids */
-#define NOTHING -1
-#define EMPTY ' '
-#define BLOCK '#'
-#define COIN_MIN '1'
-#define COIN_MAX '9'
-#define ENEMY_MIN 'a'
-#define ENEMY_MAX 'f'
-#define PLAYER '!'
-
-/** action ids */
-#define UP 87
-#define LEFT 65
-#define DOWN 83
-#define RIGHT 68
-#define PASS -1
+#include "defs.h"
 
 /**
  * Returns an action to be performed by the player bot at the current bot tick.
@@ -61,4 +34,5 @@
  *
  * @return action to be executed with the player character - one of UP, LEFT, DOWN, RIGHT, PASS
  */
-char script(unsigned row, unsigned column, unsigned level, unsigned rows, unsigned columns, char* objects);
+char script(unsigned row, unsigned column, unsigned level,
+            unsigned rows, unsigned columns, const char* objects);

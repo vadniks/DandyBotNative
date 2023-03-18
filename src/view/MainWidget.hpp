@@ -1,14 +1,4 @@
 /*
- * Inspired by the Peter Sovietov's DandyBot
- * (https://github.com/true-grue/DandyBot) which was written in 2021-2022.
- *
- * Ported to the QT framework by Vad Nik
- * (https://github.com/vadniks/DandyBotNative) in 2023 for educational purpose.
- */
-
-/*
- * GNU GPL v2
- *
  * Copyright (c) 2021 Peter Sovietov (https://github.com/true-grue)
  *
  * Copyright (C) 2023 Vad Nik (https://github.com/vadniks)

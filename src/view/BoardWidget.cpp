@@ -1,14 +1,4 @@
 /*
- * Inspired by the Peter Sovietov's DandyBot
- * (https://github.com/true-grue/DandyBot) which was written in 2021-2022.
- *
- * Ported to the QT framework by Vad Nik
- * (https://github.com/vadniks/DandyBotNative) in 2023 for educational purpose.
- */
-
-/*
- * GNU GPL v2
- *
  * Copyright (c) 2021 Peter Sovietov (https://github.com/true-grue)
  *
  * Copyright (C) 2023 Vad Nik (https://github.com/vadniks)
@@ -88,6 +78,8 @@ void BoardWidget::paintEvent(QPaintEvent*) {
     painter.restore();
 
     painter.save();
+    painter.setPen(QColor::fromRgb(255, 255, 255));
+    painter.setBrush(QColor::fromRgb(255, 255, 255));
     const auto icons = mAlgorithm.objectDescriptions();
     const auto offset = static_cast<signed>(GAME_OBJECT_SIZE);
     for (char chr = ENEMY_MIN_OBJ, i = 0; chr < ENEMY_MAX_OBJ; chr++, i++) {
@@ -101,6 +93,7 @@ void BoardWidget::paintEvent(QPaintEvent*) {
     painter.restore();
 
     painter.save();
+    painter.setPen(QColor::fromRgb(255, 255, 255));
     painter.setBrush(QColor::fromRgb(255, 255, 255));
     const auto offset2 = static_cast<signed>(rows * offset - 1);
     painter.drawLine(0, offset2, static_cast<signed>(columns) * offset - 1, offset2);
