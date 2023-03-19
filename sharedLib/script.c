@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) 2021 Peter Sovietov (https://github.com/true-grue)
+ *
  * Copyright (C) 2023 Vad Nik (https://github.com/vadniks)
  *
  * This program is free software; you can redistribute it and/or
@@ -15,28 +17,33 @@
  * along with this program; If not, see <http://www.gnu.org/licenses/>.
  */
 
-//#define IS_DEBUG
-
-#if defined(IS_DEBUG)
-#  include <stdio.h>
-#endif
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+#pragma ide diagnostic ignored "cppcoreguidelines-narrowing-conversions"
 
 #include "script.h"
 
+#define LOG_FRAMES
+
+#if defined(LOG_FRAMES)
+#  include <stdio.h>
+#  include <stdlib.h>
+#endif
+
+#define ARGUMENTS unsigned row, unsigned column, unsigned level, \
+    unsigned rows, unsigned columns, const char* objects
+
+#if defined(LOG_FRAMES)
+void logFrames(ARGUMENTS);
+#endif
+
 char hasCollectedCoin = 0;
 
-/**
- * Just an example
- */
-char script(unsigned row, unsigned column, unsigned level,
-            unsigned rows, unsigned columns, const char* objects) {
+/** Just an example */
+__attribute__((unused))
+char script(ARGUMENTS) {
 
-#if defined(IS_DEBUG)
-    printf("%u %u %u %u %u\n", row, column, level, rows, columns);
-    for (unsigned r = 0, c = 0; r < rows; r++) {
-        for (c = 0; c < columns; printf("%c", objects[r * columns + c++]));
-        printf("\n");
-    }
+#if defined(LOG_FRAMES)
+    logFrames(row, column, level, rows, columns, objects);
 #endif
 
     if (level > 0) return PASS;
@@ -53,3 +60,20 @@ char script(unsigned row, unsigned column, unsigned level,
 
     return PASS;
 }
+
+#if defined(LOG_FRAMES)
+/**
+ * Prints each game frame in a TUI manner,
+ * meaning the previous frame will be overwritten with the next one
+ */
+void logFrames(ARGUMENTS) {
+    rewind(stdout);
+    system("clear");
+    printf("%u %u %u %u %u\n", row, column, level, rows, columns);
+    for (unsigned r = 0, c; r < rows; r++) {
+        for (c = 0; c < columns; printf("%c", objects[coordsToIndex(r, columns, c++)]));
+        printf("\n");
+    }
+    fflush(stdout);
+}
+#endif

@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) 2021 Peter Sovietov (https://github.com/true-grue)
+ *
  * Copyright (C) 2023 Vad Nik (https://github.com/vadniks)
  *
  * This program is free software; you can redistribute it and/or
@@ -34,5 +36,6 @@
  *
  * @return action to be executed with the player character - one of UP, LEFT, DOWN, RIGHT, PASS
  */
+__attribute__((unused))
 char script(unsigned row, unsigned column, unsigned level,
             unsigned rows, unsigned columns, const char* objects);

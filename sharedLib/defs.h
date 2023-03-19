@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) 2021 Peter Sovietov (https://github.com/true-grue)
+ *
  * Copyright (C) 2023 Vad Nik (https://github.com/vadniks)
  *
  * This program is free software; you can redistribute it and/or
@@ -17,22 +19,25 @@
 
 #pragma once
 
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
+
 /** object ids */
-extern char NOTHING;
-extern char EMPTY;
-extern char BLOCK;
-extern char COIN_MIN;
-extern char COIN_MAX;
-extern char ENEMY_MIN;
-extern char ENEMY_MAX;
-extern char PLAYER;
+extern const char NOTHING;
+extern const char EMPTY;
+extern const char BLOCK;
+extern const char COIN_MIN;
+extern const char COIN_MAX;
+extern const char ENEMY_MIN;
+extern const char ENEMY_MAX;
+extern const char PLAYER;
 
 /** action ids */
-extern char UP;
-extern char LEFT;
-extern char DOWN;
-extern char RIGHT;
-extern char PASS;
+extern const char UP;
+extern const char LEFT;
+extern const char DOWN;
+extern const char RIGHT;
+extern const char PASS;
 
 /** Converts row and column coordinates to index of an object */
 unsigned coordsToIndex(unsigned row, unsigned columns, unsigned column);
