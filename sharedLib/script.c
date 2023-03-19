@@ -22,15 +22,10 @@
 
 #include "script.h"
 
-#define LOG_FRAMES
-
-#if defined(LOG_FRAMES)
-#  include <stdio.h>
-#  include <stdlib.h>
-#endif
-
 #define ARGUMENTS unsigned row, unsigned column, unsigned level, \
     unsigned rows, unsigned columns, const char* objects
+
+#define LOG_FRAMES
 
 #if defined(LOG_FRAMES)
 void logFrames(ARGUMENTS);
@@ -39,8 +34,7 @@ void logFrames(ARGUMENTS);
 char hasCollectedCoin = 0;
 
 /** Just an example */
-__attribute__((unused))
-char script(ARGUMENTS) {
+__attribute__((unused)) char script(ARGUMENTS) {
 
 #if defined(LOG_FRAMES)
     logFrames(row, column, level, rows, columns, objects);
@@ -62,9 +56,14 @@ char script(ARGUMENTS) {
 }
 
 #if defined(LOG_FRAMES)
+
+#include <stdio.h>
+#include <stdlib.h>
+
 /**
  * Prints each game frame in a TUI manner,
- * meaning the previous frame will be overwritten with the next one
+ * meaning the previous frame will be overwritten
+ * with the next one at the same position
  */
 void logFrames(ARGUMENTS) {
     rewind(stdout);
@@ -76,4 +75,5 @@ void logFrames(ARGUMENTS) {
     }
     fflush(stdout);
 }
+
 #endif

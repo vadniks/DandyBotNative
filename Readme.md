@@ -11,6 +11,7 @@ Sublicensed under GNU GPL v2 from MIT.
 
 ![Launch widget](a.png "Launch widget")
 ![Game process](b.png "Game process")
+![Debug TUI support](c.png "Debug TUI support")
 
 # Interaction
 
@@ -23,6 +24,8 @@ and the script will be executed on each tick.
 Entry point of the shared library is the only available function in it - script(...).
 It has several useful parameters such as current coordinates and objects around the player.
 The function must return one of the predefined action such as move left or right.
+
+Script debugging via TUI is also supported.
 
 ### Build
 
